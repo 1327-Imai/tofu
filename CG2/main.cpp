@@ -1067,10 +1067,10 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 		//ビュー変換
 		//いずれかのキーを押していたら
-		if (input_->PushKey(DIK_D) || input_->PushKey(DIK_A)) {
+		if (input_->TriggerKey(DIK_D) || input_->PushKey(DIK_A)) {
 
 			//押したキーに応じてangleを増減させる
-			if (input_->PushKey(DIK_D)) {
+			if (input_->TriggerKey(DIK_D)) {
 				angle += XMConvertToRadians(1.0f);
 			}
 			if (input_->PushKey(DIK_A)) {
