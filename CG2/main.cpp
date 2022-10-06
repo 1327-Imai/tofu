@@ -1,4 +1,3 @@
-#include "WinApp.h"
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <cassert>
@@ -7,19 +6,15 @@
 #include <DirectXmath.h>
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
-#include <wrl.h>
-
-#define DIRECTINPUT_VERSION 0x0800	//DirectInoutのバージョン指定
-#include <dinput.h>
-
 #include <math.h>
 #include <random>
+
+#include "WinApp.h"
+#include "input.h"
 
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"d3dcompiler")
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
 
 WinApp winApp_;
 
@@ -37,8 +32,6 @@ std::uniform_real_distribution<float> distPosX(-100.0 , 100.0);
 std::uniform_real_distribution<float> distPosY(-50.0 , 50.0);
 std::uniform_real_distribution<float> distPosZ(30.0 , 60.0);
 std::uniform_real_distribution<float> distRot(0 , XMConvertToRadians(360.0f));
-
-
 
 #pragma region//構造体
 
@@ -66,11 +59,9 @@ struct Object3D {
 	XMMATRIX matWorld = XMMatrixIdentity();
 	//親オブジェクトへのポインタ
 	Object3D* parent = nullptr;
-
 };
 
 #pragma endregion
-
 
 #pragma region//関数のプロトタイプ宣言
 //ウィンドウプロシーシャ
@@ -95,13 +86,12 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	
 	//WindowsAPI初期化処理
 	winApp_.Initialize();
+	Input* input_ = new Input;
 
-	
 #pragma endregion//ウィンドウの生成
 
 #pragma region//メッセージループ
 	
-
 #pragma region//DirectX初期化処理
 	//デバッグレイヤーの有効化
 
@@ -326,31 +316,15 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 	result = device->CreateFence(fenceVal , D3D12_FENCE_FLAG_NONE , IID_PPV_ARGS(&fence));
 
-	//Directinputの初期化
-	IDirectInput8* directInput = nullptr;
-	result = DirectInput8Create(
-		winApp_.w.hInstance ,
-		DIRECTINPUT_VERSION ,
-		IID_IDirectInput8 ,
-		(void**)&directInput ,
-		nullptr
-	);
+	// DirectInputの初期化
+	input_->DirectInputInit(winApp_);
+
+
 	assert(SUCCEEDED(result));
 #pragma endregion
 
 #pragma region// キーボードデバイスの生成
-	IDirectInputDevice8* keyboard = nullptr;
-	result = directInput->CreateDevice(GUID_SysKeyboard , &keyboard , NULL);
-	assert(SUCCEEDED(result));
-
-	//入力データのリセット
-	result = keyboard->SetDataFormat(&c_dfDIKeyboard); //標準形式
-	assert(SUCCEEDED(result));
-
-	//排他制御レベルのリセット
-	result = keyboard->SetCooperativeLevel(
-		winApp_.hwnd , DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	assert(SUCCEEDED(result));
+	input_->DirectInputCreate(winApp_);
 #pragma endregion
 
 #pragma endregion//DirectX初期化処理
@@ -1086,25 +1060,20 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 #pragma region//DirectX毎フレーム処理
 
-		//キーボード情報の取得開始
-		keyboard->Acquire();
-
-		//前キーの入力状態を取得する
-		BYTE key[256] = {};
-		keyboard->GetDeviceState(sizeof(key) , key);
-
+		// キーボード情報の取得開始
+		input_->Update();
+		
 #pragma region//更新処理
-
 
 		//ビュー変換
 		//いずれかのキーを押していたら
-		if (key[DIK_D] || key[DIK_A]) {
+		if (input_->PushKey(DIK_D) || input_->PushKey(DIK_A)) {
 
 			//押したキーに応じてangleを増減させる
-			if (key[DIK_D]) {
+			if (input_->PushKey(DIK_D)) {
 				angle += XMConvertToRadians(1.0f);
 			}
-			if (key[DIK_A]) {
+			if (input_->PushKey(DIK_A)) {
 				angle -= XMConvertToRadians(1.0f);
 			}
 
@@ -1117,7 +1086,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 		}
 
-		MoveObject3d(&object3ds[0] , key);
+		MoveObject3d(&object3ds[0] , input_->key);
 
 		for (int i = 0; i < _countof(object3ds); i++) {
 			UpdataObject3d(&object3ds[i] , matView , matProjection);
@@ -1146,13 +1115,12 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 		//3.画面クリア
 		FLOAT clearColor[] = {0.1f , 0.25f , 0.5f , 0.0f};
 
-		if (key[DIK_SPACE]) {
+		if (input_->PushKey(DIK_SPACE)) {
 
 			clearColor[0] = 0.5f;
 			clearColor[1] = 0.1f;
 			clearColor[2] = 0.25f;
 			clearColor[3] = 0.0f;
-
 		}
 
 		commandList->ClearRenderTargetView(rtvHandle , clearColor , 0 , nullptr);
@@ -1205,7 +1173,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 		//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
 		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
 
-		if (key[DIK_SPACE]) {
+		if (input_->PushKey(DIK_SPACE)) {
 			//二枚目を指し示すように差し込む
 			srvGpuHandle.ptr += incremantSize;
 		}
