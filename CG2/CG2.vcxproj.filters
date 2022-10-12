@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\Math">
+      <UniqueIdentifier>{3f8b0e77-9002-40e8-872e-a21e84932c7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Math">
+      <UniqueIdentifier>{8a6e3084-520d-4d51-bc97-87c3f0508fdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Math\Vector">
+      <UniqueIdentifier>{619db8e9-b5b4-4e54-a856-76830d34113e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Math\Vector">
+      <UniqueIdentifier>{a25d64e6-ed23-4db7-a21a-ddcf3a391f8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -23,6 +35,24 @@
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldTransform.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix4.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="MathFunc.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>ソース ファイル\Math\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector4.cpp">
+      <Filter>ソース ファイル\Math\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>ソース ファイル\Math\Vector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +68,24 @@
     </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldTransform.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix4.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="MathFunc.h">
+      <Filter>ヘッダー ファイル\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector4.h">
+      <Filter>ヘッダー ファイル\Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>ヘッダー ファイル\Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>ヘッダー ファイル\Math\Vector</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
