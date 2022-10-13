@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="WinApp.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="WinApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
