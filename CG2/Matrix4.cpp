@@ -2,7 +2,7 @@
 //コンストラクタ
 Matrix4::Matrix4() {
 
-	Identity();
+	SetIdentityMatrix();
 
 }
 
@@ -84,7 +84,7 @@ Matrix4 Matrix4::operator*=(float s) {
 Matrix4 Matrix4::operator*=(const Matrix4& m) {
 
 	Matrix4 result;
-	result.Identity();
+	result.SetIdentityMatrix();
 
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {

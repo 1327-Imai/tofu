@@ -20,8 +20,8 @@ void MathFunc::Affine::SetMatRotation(Matrix4& affineMat , Vector3 rotation) {
 	//âÒì]çsóÒÇêÈåæ
 	//Zé≤âÒì]
 	Matrix4 matRotZ = {
-		cos(rotation.z) , sin(rotation.z) , 0 , 0 ,
-		-sin(rotation.z) , cos(rotation.z) , 0 , 0 ,
+		(float)cos(rotation.z) , (float)sin(rotation.z) , 0 , 0 ,
+		(float)-sin(rotation.z) , (float)cos(rotation.z) , 0 , 0 ,
 		0 , 0 , 1 , 0 ,
 		0 , 0 , 0 , 1 ,
 	};
@@ -29,16 +29,16 @@ void MathFunc::Affine::SetMatRotation(Matrix4& affineMat , Vector3 rotation) {
 	//Xé≤âÒì]
 	Matrix4 matRotX = {
 		1 , 0 , 0 , 0 ,
-		0 , cos(rotation.x) , sin(rotation.x) , 0 ,
-		0 , -sin(rotation.x) , cos(rotation.x) , 0 ,
+		0 , (float)cos(rotation.x) , (float)sin(rotation.x) , 0 ,
+		0 , -(float)sin(rotation.x) , (float)cos(rotation.x) , 0 ,
 		0 , 0 , 0 , 1 ,
 	};
 
 	//Yé≤âÒì]
 	Matrix4 matRotY = {
-		cos(rotation.y) , 0 , -sin(rotation.y) , 0 ,
+		(float)cos(rotation.y) , 0 , (float)-sin(rotation.y) , 0 ,
 		0 , 1 , 0 , 0 ,
-		sin(rotation.y) , 0 , cos(rotation.y) , 0 ,
+		(float)sin(rotation.y) , 0 , (float)cos(rotation.y) , 0 ,
 		0 , 0 , 0 , 1 ,
 	};
 
@@ -87,12 +87,12 @@ Matrix4 MathFunc::Affine::CreateMatRotation(Vector3 rotation) {
 
 	//âÒì]çsóÒÇêÈåæ
 	Matrix4 matRot;
-	matRot.Identity();
+	matRot.SetIdentityMatrix();
 
 	//Zé≤âÒì]
 	Matrix4 matRotZ = {
-		cos(rotation.z) , sin(rotation.z) , 0 , 0 ,
-		-sin(rotation.z) , cos(rotation.z) , 0 , 0 ,
+		(float)cos(rotation.z) , (float)sin(rotation.z) , 0 , 0 ,
+		(float)-sin(rotation.z) , (float)cos(rotation.z) , 0 , 0 ,
 		0 , 0 , 1 , 0 ,
 		0 , 0 , 0 , 1 ,
 	};
@@ -100,16 +100,16 @@ Matrix4 MathFunc::Affine::CreateMatRotation(Vector3 rotation) {
 	//Xé≤âÒì]
 	Matrix4 matRotX = {
 		1 , 0 , 0 , 0 ,
-		0 , cos(rotation.x) , sin(rotation.x) , 0 ,
-		0 , -sin(rotation.x) , cos(rotation.x) , 0 ,
+		0 , (float)cos(rotation.x) , (float)sin(rotation.x) , 0 ,
+		0 , (float)-sin(rotation.x) , (float)cos(rotation.x) , 0 ,
 		0 , 0 , 0 , 1 ,
 	};
 
 	//Yé≤âÒì]
 	Matrix4 matRotY = {
-		cos(rotation.y) , 0 , -sin(rotation.y) , 0 ,
+		(float)cos(rotation.y) , 0 , (float)-sin(rotation.y) , 0 ,
 		0 , 1 , 0 , 0 ,
-		sin(rotation.y) , 0 , cos(rotation.y) , 0 ,
+		(float)sin(rotation.y) , 0 , (float)cos(rotation.y) , 0 ,
 		0 , 0 , 0 , 1 ,
 	};
 
