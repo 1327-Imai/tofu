@@ -1,5 +1,6 @@
 #pragma once
 class Vector2 {
+public:
 	//コンストラクタ
 	Vector2();					//零ベクトルとして生成
 	Vector2(float x, float y);	//x成分,y成分を指定しての生成
