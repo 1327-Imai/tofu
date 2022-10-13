@@ -143,6 +143,8 @@
   <ItemGroup>
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ViewProjection.cpp" />
     <ClCompile Include="MathFunc.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Vector2.cpp" />
@@ -175,6 +177,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="ViewProjection.h" />
     <ClInclude Include="MathFunc.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Vector2.h" />

@@ -11,7 +11,7 @@
 
 #include "WinApp.h"
 #include "input.h"
-
+#include "ViewProjection.h"
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"d3dcompiler")
@@ -802,11 +802,14 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 #pragma endregion
 
 #pragma region//ビュー変換行列
-	XMMATRIX matView;
-	XMFLOAT3 eye(0.0f , 0.0f , -100.0f);	//視点座標
-	XMFLOAT3 target(0.0f , 0.0f , 0.0f);	//注視点座標
-	XMFLOAT3 up(0.0f , 1.0f , 0.0f);		//上方向ベクトル
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye) , XMLoadFloat3(&target) , XMLoadFloat3(&up));
+	ViewProjection viewProjection_;
+	viewProjection_.Initialize();
+	viewProjection_.UpdateView();
+	//XMMATRIX matView;
+	//XMFLOAT3 eye(0.0f , 0.0f , -100.0f);	//視点座標
+	//XMFLOAT3 target(0.0f , 0.0f , 0.0f);	//注視点座標
+	//XMFLOAT3 up(0.0f , 1.0f , 0.0f);		//上方向ベクトル
+	//matView = XMMatrixLookAtLH(XMLoadFloat3(&eye) , XMLoadFloat3(&target) , XMLoadFloat3(&up));
 
 	float angle = 0.0f;
 
@@ -1067,10 +1070,10 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 		//ビュー変換
 		//いずれかのキーを押していたら
-		if (input_->TriggerKey(DIK_D) || input_->PushKey(DIK_A)) {
+		if (input_->PushKey(DIK_D) || input_->PushKey(DIK_A)) {
 
 			//押したキーに応じてangleを増減させる
-			if (input_->TriggerKey(DIK_D)) {
+			if (input_->PushKey(DIK_D)) {
 				angle += XMConvertToRadians(1.0f);
 			}
 			if (input_->PushKey(DIK_A)) {
@@ -1078,18 +1081,18 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 			}
 
 			//angleラジアンだけY軸周りに回転。半径は-100
-			eye.x = -100 * sinf(angle);
-			eye.z = -100 * cosf(angle);
+			viewProjection_.eye.x = -100 * sinf(angle);
+			viewProjection_.eye.z = -100 * cosf(angle);
 
 			//ビュー変換行列を作り直す
-			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye) , XMLoadFloat3(&target) , XMLoadFloat3(&up));
+			viewProjection_.matView = XMMatrixLookAtLH(XMLoadFloat3(&viewProjection_.eye) , XMLoadFloat3(&viewProjection_.target) , XMLoadFloat3(&viewProjection_.up));
 
 		}
 
 		MoveObject3d(&object3ds[0] , input_->key);
 
 		for (int i = 0; i < _countof(object3ds); i++) {
-			UpdataObject3d(&object3ds[i] , matView , matProjection);
+			UpdataObject3d(&object3ds[i] , viewProjection_.matView , matProjection);
 		}
 
 #pragma endregion//更新処理

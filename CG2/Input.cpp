@@ -11,6 +11,7 @@ Input::Input()
 
 Input::~Input()
 {
+
 }
 
 bool Input::PushKey(unsigned char keys)
@@ -37,11 +38,11 @@ void Input::DirectInputInit(WinApp winApp_)
 
 void Input::DirectInputCreate(WinApp winApp_)
 {
-	//ƒL[ƒ{[ƒhƒfƒoƒCƒX‚Ì¶¬
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ‡ãƒã‚¤ã‚¹ã®ç”Ÿæˆ
 	result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
 	assert(SUCCEEDED(result));
 
-	result = keyboard->SetDataFormat(&c_dfDIKeyboard);	//•W€Œ`®
+	result = keyboard->SetDataFormat(&c_dfDIKeyboard);	//æ¨™æº–å½¢å¼
 	assert(SUCCEEDED(result));
 
 	result = keyboard->SetCooperativeLevel(
@@ -51,12 +52,14 @@ void Input::DirectInputCreate(WinApp winApp_)
 
 void Input::Update()
 {
-	//ƒL[ƒ{[ƒhî•ñ‚Ìæ“¾ŠJn
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ã®å–å¾—é–‹å§‹
 	keyboard->Acquire();
-	//‘SƒL[‚Ì“ü—Íó‘Ô‚ğæ“¾‚·‚é
+
+	//å…¨ã‚­ãƒ¼ã®å…¥åŠ›çŠ¶æ…‹ã‚’å–å¾—ã™ã‚‹
 	for (int i = 0; i < 256; i++)
 	{
 		oldkey[i] = key[i];
 	}
+	
 	keyboard->GetDeviceState(sizeof(key), key);
 }
