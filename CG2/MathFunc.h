@@ -1,5 +1,7 @@
 #pragma once
 #include <math.h>
+#include <DirectXMath.h>
+using namespace DirectX;
 
 #include "Vector3.h"
 #include "Matrix4.h"
@@ -18,9 +20,16 @@ namespace MathFunc {
 		Matrix4 CreateMatScale(Vector3 scale);				//スケーリング行列を生成する関数
 		Matrix4 CreateMatRotation(Vector3 rotation);		//回転行列を生成する関数
 		Matrix4 CreateMatTranslation(Vector3 translation);	//平行移動行列の生成をする関数
+	
 	}
 
 	namespace Utility {
+		//XMMATRIXをMatrix4に変換する関数
+		Matrix4 ConvertXMMATRIXtoMatrix4(XMMATRIX xmMatrix);
+
+		//ビュー行列を生成する関数
+		Matrix4 CreatMatView(Vector3 eye , Vector3 target , Vector3 up);
+
 		//度数法⇔弧度法の関数
 		float Deg2Rad(float Deg);	//度数法を弧度法に変換する関数
 		float Rad2Deg(float rad);	//弧度法を度数法に変換する関数
