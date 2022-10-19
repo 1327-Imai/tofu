@@ -141,10 +141,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DX12base.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Texture.cpp" />
+=======
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ViewProjection.cpp" />
+    <ClCompile Include="MathFunc.cpp" />
+    <ClCompile Include="Matrix4.cpp" />
+    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Vector4.cpp" />
     <ClCompile Include="WinApp.cpp" />
+    <ClCompile Include="WorldTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicVS.hlsl">
@@ -169,9 +179,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DX12base.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Texture.h" />
+=======
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="ViewProjection.h" />
+    <ClInclude Include="MathFunc.h" />
+    <ClInclude Include="Matrix4.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Vector4.h" />
     <ClInclude Include="WinApp.h" />
+    <ClInclude Include="WorldTransform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

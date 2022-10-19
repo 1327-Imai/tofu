@@ -1,39 +1,105 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="ソース ファイル">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="ヘッダー ファイル">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <FxCompile Include="BasicPS.hlsl">
+      <Filter>shader</Filter>
+    </FxCompile>
+    <FxCompile Include="BasicVS.hlsl">
+      <Filter>shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="WinApp.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldTransform.cpp">
+      <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewProjection.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector4.cpp">
+      <Filter>source\math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>source\math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>source\math</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix4.cpp">
+      <Filter>source\math</Filter>
+    </ClCompile>
+    <ClCompile Include="MathFunc.cpp">
+      <Filter>source\math</Filter>
+    </ClCompile>
+    <ClCompile Include="DX12base.cpp">
+      <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="BasicVS.hlsl" />
-    <FxCompile Include="BasicPS.hlsl" />
+    <ClInclude Include="Input.h">
+      <Filter>hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewProjection.h">
+      <Filter>hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="WinApp.h">
+      <Filter>hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldTransform.h">
+      <Filter>hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector4.h">
+      <Filter>hedder\math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>hedder\math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>hedder\math</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix4.h">
+      <Filter>hedder\math</Filter>
+    </ClInclude>
+    <ClInclude Include="MathFunc.h">
+      <Filter>hedder\math</Filter>
+    </ClInclude>
+    <ClInclude Include="DX12base.h">
+      <Filter>hedder</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Basic.hlsli" />
+    <Filter Include="source">
+      <UniqueIdentifier>{7299fcc6-685c-4ab1-b615-e973a29d3104}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hedder">
+      <UniqueIdentifier>{806800b6-85b7-449a-9bc2-deb17ea88dfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shader">
+      <UniqueIdentifier>{4de0aadc-9648-4474-a1f4-5392aefebca1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\math">
+      <UniqueIdentifier>{ff10a3fb-0e9e-4616-80bd-b6be1fadbf5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hedder\math">
+      <UniqueIdentifier>{3b626bdf-15d8-4e93-8826-c2ce609adba7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinApp.h">
@@ -45,5 +111,9 @@
     <ClInclude Include="Texture.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+=======
+    <None Include="Basic.hlsli">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
 </Project>
