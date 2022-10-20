@@ -45,6 +45,7 @@
     <ClCompile Include="DX12base.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -78,6 +79,9 @@
       <Filter>hedder\math</Filter>
     </ClInclude>
     <ClInclude Include="DX12base.h">
+      <Filter>hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject3D.h">
       <Filter>hedder</Filter>
     </ClInclude>
   </ItemGroup>

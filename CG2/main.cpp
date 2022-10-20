@@ -1,33 +1,18 @@
-#include <d3d12.h>
-#include <dxgi1_6.h>
-#include <cassert>
-#include <vector>
-#include <string>
-#include <DirectXmath.h>
-#include <d3dcompiler.h>
-#include <DirectXTex.h>
-#include <math.h>
 #include <random>
+#include <DirectXTex.h>
 
 #include "DX12base.h"
 #include "Model.h"
 #include "WorldTransform.h"
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Matrix4.h"
+#include "GameObject3D.h"
+
+#include "MathFunc.h"
 
 #include "WinApp.h"
 #include "input.h"
 #include "ViewProjection.h"
-#pragma comment(lib,"d3d12.lib")
-#pragma comment(lib,"dxgi.lib")
-#pragma comment(lib,"d3dcompiler")
 
 WinApp winApp_;
-
-using namespace DirectX;
-using namespace Microsoft::WRL;
 
 const double PI = 3.141592;
 
@@ -78,7 +63,7 @@ void UpdateObject3d(Object3D* object , ViewProjection viewProjection , XMMATRIX&
 
 void DrawObject3d(Object3D* object , DX12base dx12base , Model model);
 
-void MoveObject3d(Object3D* object , BYTE key[256]);
+void MoveObject3d(GameObject3D* object , BYTE key[256]);
 
 void SetRandomPositionObject3d(Object3D* object);
 void SetRandomRotateObject3d(Object3D* object);
@@ -116,7 +101,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 	Model model;
 	model.SetDx12Base(&dx12base);
-	model.LoadModel();
+	model.LoadModel("Resources/triangle.obj");
 	model.Initialize();
 
 #pragma endregion
@@ -431,33 +416,45 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 	Object3D object3ds[kObjectCount];
 
+	GameObject3D gameObject;
+	GameObject3D gameObject2;
+
 	for (int i = 0; i < _countof(object3ds); i++) {
 
 		//初期化
 		InitializeObject3d(&object3ds[i] , dx12base.GetDevice());
-
 		object3ds[i].worldTransform.initialize();
 
 		//ここから下は親子構造のサンプル
 		//先頭以外なら
 		if (i > 0) {
-			//ひとつ前のオブジェクトを親オブジェクトとする
-			//object3ds[i].parent = &object3ds[i - 1];
-			//親オブジェクトの9割の大きさ
-			//object3ds[i].scale = {0.9f , 0.9f , 0.9f};
-			//親オブジェクトに対してZ軸まわりに30度回転
-			//object3ds[i].rotation = {0.0f , 0.0f , XMConvertToRadians(30.0f)};
+			////ひとつ前のオブジェクトを親オブジェクトとする
+			//object3ds[i].worldTransform.parent = &object3ds[i - 1].worldTransform;
+			////親オブジェクトの9割の大きさ
+			//object3ds[i].worldTransform.scale = {0.9f , 0.9f , 0.9f};
+			////親オブジェクトに対してZ軸まわりに30度回転
+			//object3ds[i].worldTransform.rotation = {0.0f , 0.0f , XMConvertToRadians(30.0f)};
 
-			//親オブジェクトに対してZ軸方向に-8.0ずらす
-			//object3ds[i].position = {0.0f , 0.0f , -8.0f};
+			////親オブジェクトに対してZ軸方向に-8.0ずらす
+			//object3ds[i].worldTransform.translation = {0.0f , 0.0f , -8.0f};
 
 			//ランダムに配置する
 			SetRandomPositionObject3d(&object3ds[i]);
 			SetRandomRotateObject3d(&object3ds[i]);
 		}
 
-		object3ds->worldTransform.UpdateMatWorld();
+		//object3ds->Update();
 	}
+
+	gameObject.SetDX12Base(&dx12base);
+	gameObject.Initialize();
+	gameObject.SetViewProjection(&viewProjection_);
+	gameObject.SetMatProjection(&matProjection);
+
+	gameObject2.SetDX12Base(&dx12base);
+	gameObject2.Initialize();
+	gameObject2.SetViewProjection(&viewProjection_);
+	gameObject2.SetMatProjection(&matProjection);
 
 #pragma endregion
 
@@ -701,11 +698,16 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 		}
 
-		MoveObject3d(&object3ds[0] , input_->key);
+		//MoveObject3d(&object3ds[0] , input_->key);
 
 		for (int i = 0; i < _countof(object3ds); i++) {
 			UpdateObject3d(&object3ds[i] , viewProjection_ , matProjection);
 		}
+
+		MoveObject3d(&gameObject , input_->key);
+
+		gameObject.Update();
+		gameObject2.Update();
 
 #pragma endregion//更新処理
 
@@ -721,7 +723,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 		//プリミティブ形状の設定コマンド
 		dx12base.GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		model.Draw();
+		//model.Draw();
 
 		//頂点バッファ―ビューをセットするコマンド
 		dx12base.GetCmdList()->SetGraphicsRootConstantBufferView(0 , constBuffMaterial->GetGPUVirtualAddress());
@@ -741,8 +743,11 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 		dx12base.GetCmdList()->SetGraphicsRootDescriptorTable(1 , srvGpuHandle);
 
 		for (int i = 0; i < _countof(object3ds); i++) {
-			DrawObject3d(&object3ds[i] , dx12base , model);
+			//DrawObject3d(&object3ds[i] , dx12base , model);
 		}
+
+		gameObject.Draw();
+		gameObject2.Draw();
 
 #pragma endregion
 
@@ -828,7 +833,7 @@ void DrawObject3d(Object3D* object , DX12base dx12base , Model model) {
 	model.Draw();
 }
 
-void MoveObject3d(Object3D* object , BYTE key[256]) {
+void MoveObject3d(GameObject3D* object , BYTE key[256]) {
 	if (key[DIK_UP] || key[DIK_DOWN] || key[DIK_RIGHT] || key[DIK_LEFT]) {
 
 		if (key[DIK_UP]) {
