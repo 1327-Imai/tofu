@@ -4,7 +4,7 @@
 #include"GameObject3D.h"
 #include "WinApp.h"
 #include "ViewProjection.h"
-#include 
+
 
 class GameScene {
 
@@ -17,7 +17,7 @@ public: // メンバ関数
 	~GameScene();
 
 	//初期化
-	void Initialize(DX12base* DX12base, Input* input,WinApp* winApp);
+	void Initialize(DX12base* dx12base , Input* input , WinApp* winApp);
 
 	//毎フレーム処理
 	void Update();
@@ -26,13 +26,14 @@ public: // メンバ関数
 	void Draw();
 
 private: // メンバ変数
-	DX12base* dx12base = nullptr;
-	Input* input = nullptr;
+	WinApp* winApp_ = nullptr;
+	DX12base* dx12base_ = nullptr;
+	Input* input_ = nullptr;
+
+	ViewProjection viewProjection_;
+	float angle = 0.0f;
+
 	GameObject3D* gameObject = nullptr;
 	GameObject3D* gameObject2 = nullptr;
-	ViewProjection* viewProjection_ = nullptr;
-	WinApp* winApp_ = nullptr;
 
 };
-
-

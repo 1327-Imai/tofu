@@ -34,21 +34,21 @@ std::random_device seed_gen;
 //メルセンヌ・ツイスターの乱数エンジン
 std::mt19937_64 engine(seed_gen());
 //乱数範囲の指定
-std::uniform_real_distribution<float> distPosX(-100.0, 100.0);
-std::uniform_real_distribution<float> distPosY(-50.0, 50.0);
-std::uniform_real_distribution<float> distPosZ(30.0, 60.0);
-std::uniform_real_distribution<float> distRot(0, XMConvertToRadians(360.0f));
+std::uniform_real_distribution<float> distPosX(-100.0 , 100.0);
+std::uniform_real_distribution<float> distPosY(-50.0 , 50.0);
+std::uniform_real_distribution<float> distPosZ(30.0 , 60.0);
+std::uniform_real_distribution<float> distRot(0 , XMConvertToRadians(360.0f));
 
 #pragma region//関数のプロトタイプ宣言
 //ウィンドウプロシーシャ
-LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+LRESULT WindowProc(HWND hwnd , UINT msg , WPARAM wparam , LPARAM lparam);
 
-void MoveObject3d(GameObject3D* object, BYTE key[256]);
+void MoveObject3d(GameObject3D* object , BYTE key[256]);
 
 #pragma endregion//関数のプロトタイプ宣言
 
 //main関数
-int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
+int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) {
 
 	//WindowsAPI初期化処理
 	winApp_.Initialize();
@@ -67,7 +67,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	//XAudioエンジンのインスタンスを生成
 	soundManager_.Initialize();
 	//音声再生
-	soundManager_.SoundPlayWave(soundManager_.xAudio2.Get(), soundData1, false, 0.01f);
+	soundManager_.SoundPlayWave(soundManager_.xAudio2.Get() , soundData1 , false , 0.01f);
 
 	DX12base dx12base;
 	dx12base.SetWinApp(&winApp_);
@@ -80,9 +80,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	input_->DirectInputCreate(winApp_);
 #pragma endregion
 
-	// ゲームシーンの初期化
-	gameScene = new GameScene();
-	gameScene->Initialize(&dx12base, input_,&winApp_);
+	//// ゲームシーンの初期化
+	//gameScene = new GameScene();
+	//gameScene->Initialize(&dx12base, input_,&winApp_);
 
 
 #pragma region//描画初期化処理
@@ -95,14 +95,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	// 頂点シェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"BasicVS.hlsl",									//シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE,					//インクルード可能にする
-		"main",											//エントリーポイント名
-		"vs_5_0",											//シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,	//デバッグ用設定
-		0,
-		&vsBlob,
+		L"BasicVS.hlsl" ,									//シェーダーファイル名
+		nullptr ,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE ,					//インクルード可能にする
+		"main" ,											//エントリーポイント名
+		"vs_5_0" ,											//シェーダーモデル指定
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION ,	//デバッグ用設定
+		0 ,
+		&vsBlob ,
 		&errorBlob
 	);
 
@@ -113,9 +113,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		std::string error;
 		error.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
-			error.begin());
+		std::copy_n((char*)errorBlob->GetBufferPointer() ,
+					errorBlob->GetBufferSize() ,
+					error.begin());
 		error += "\n";
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(error.c_str());
@@ -126,14 +126,14 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 #pragma region//ピクセルシェーダー
 	//ピクセルシェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"BasicPS.hlsl",									//シェーダーファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE,					//インクルード可能にする
-		"main",												//エントリーポイント名
-		"ps_5_0",											//シェーダーモデル設定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,	//デバッグ用設定
-		0,
-		&psBlob,
+		L"BasicPS.hlsl" ,									//シェーダーファイル名
+		nullptr ,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE ,					//インクルード可能にする
+		"main" ,												//エントリーポイント名
+		"ps_5_0" ,											//シェーダーモデル設定
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION ,	//デバッグ用設定
+		0 ,
+		&psBlob ,
 		&errorBlob
 	);
 
@@ -144,9 +144,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		std::string error;
 		error.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
-			error.begin());
+		std::copy_n((char*)errorBlob->GetBufferPointer() ,
+					errorBlob->GetBufferSize() ,
+					error.begin());
 		error += "\n";
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(error.c_str());
@@ -282,16 +282,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	//ルートシグネチャのシリアライズ
 	ComPtr<ID3DBlob> rootSigBlob = nullptr;
 	result = D3D12SerializeRootSignature(
-		&rootSignatureDesc,
-		D3D_ROOT_SIGNATURE_VERSION_1_0,
-		&rootSigBlob,
+		&rootSignatureDesc ,
+		D3D_ROOT_SIGNATURE_VERSION_1_0 ,
+		&rootSigBlob ,
 		&errorBlob);
 	assert(SUCCEEDED(result));
 
 	result = dx12base.GetDevice()->CreateRootSignature(
-		0,
-		rootSigBlob->GetBufferPointer(),
-		rootSigBlob->GetBufferSize(),
+		0 ,
+		rootSigBlob->GetBufferPointer() ,
+		rootSigBlob->GetBufferSize() ,
 		IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(result));
 
@@ -301,7 +301,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	//パイプラインステートの生成
 	ComPtr<ID3D12PipelineState> pipelineState = nullptr;
-	result = dx12base.GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	result = dx12base.GetDevice()->CreateGraphicsPipelineState(&pipelineDesc , IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 
 #pragma region//射影変換
@@ -315,23 +315,27 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	//	0.0f , 1.0f
 	//);
 
-	//透視投影変換行列の計算
-	/*XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
-		XMConvertToRadians(45.0),
-		(float)winApp_.window_width / winApp_.window_height,
-		0.1f, 1000.0f
-	);*/
+	////透視投影変換行列の計算
+	//XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
+	//	XMConvertToRadians(45.0),
+	//	(float)winApp_.window_width / winApp_.window_height,
+	//	0.1f, 1000.0f
+	//);
 
 #pragma endregion
 
 #pragma region//ビュー変換行列
-	/*ViewProjection viewProjection_;
-	viewProjection_.Initialize();
-	viewProjection_.UpdateView();*/
+	//ViewProjection viewProjection_;
+	//viewProjection_.Initialize();
+	//viewProjection_.UpdateView();
 
-	float angle = 0.0f;
+	//float angle = 0.0f;
 
 #pragma endregion
+
+	// ゲームシーンの初期化
+	gameScene = new GameScene();
+	gameScene->Initialize(&dx12base , input_ , &winApp_);
 
 #pragma region//ワールド変換行列
 
@@ -341,18 +345,18 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	//GameObject3D gameObject;
 
-	/*gameObject.SetDX12Base(&dx12base);
-	gameObject.PreLoadTexture(L"Resources/texture.jpg");
-	gameObject.Initialize();
-	gameObject.SetViewProjection(&viewProjection_);
-	gameObject.SetMatProjection(&matProjection);
+	//gameObject.SetDX12Base(&dx12base);
+	//gameObject.PreLoadTexture(L"Resources/texture.jpg");
+	//gameObject.Initialize();
+	//gameObject.SetViewProjection(&viewProjection_);
+	//gameObject.SetMatProjection(&matProjection);
 
-	GameObject3D gameObject2;
+	//GameObject3D gameObject2;
 
-	gameObject2.SetDX12Base(&dx12base);
-	gameObject2.Initialize();
-	gameObject2.SetViewProjection(&viewProjection_);
-	gameObject2.SetMatProjection(&matProjection);*/
+	//gameObject2.SetDX12Base(&dx12base);
+	//gameObject2.Initialize();
+	//gameObject2.SetViewProjection(&viewProjection_);
+	//gameObject2.SetMatProjection(&matProjection);
 
 #pragma endregion
 
@@ -363,7 +367,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 #pragma region//ウィンドウメッセージ処理
 		//メッセージがある?
-		if (PeekMessage(&winApp_.msg, nullptr, 0, 0, PM_REMOVE)) {
+		if (PeekMessage(&winApp_.msg , nullptr , 0 , 0 , PM_REMOVE)) {
 			TranslateMessage(&winApp_.msg);	//キー入力メッセージの処理
 			DispatchMessage(&winApp_.msg);	//プロシーシャにメッセージを送る
 		}
@@ -381,8 +385,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 #pragma region//更新処理
 
-		//ビュー変換
-		//いずれかのキーを押していたら
+		////ビュー変換
+		////いずれかのキーを押していたら
 		//if (input_->PushKey(DIK_D) || input_->PushKey(DIK_A)) {
 
 		//	//押したキーに応じてangleを増減させる
@@ -393,19 +397,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		//		angle -= XMConvertToRadians(1.0f);
 		//	}
 
-			//angleラジアンだけY軸周りに回転。半径は-100
-			//viewProjection_.eye.x = -100 * sinf(angle);
-			//viewProjection_.eye.z = -100 * cosf(angle);
+		//	//angleラジアンだけY軸周りに回転。半径は - 100
+		//	viewProjection_.eye.x = -100 * sinf(angle);
+		//	viewProjection_.eye.z = -100 * cosf(angle);
 
-			////ビュー変換行列を作り直す
-			//viewProjection_.UpdateView();
+		//	//ビュー変換行列を作り直す
+		//	viewProjection_.UpdateView();
 
-	//}
+		//}
 
-	/*MoveObject3d(&gameObject , input_->key);
+		//MoveObject3d(&gameObject , input_->key);
 
-	gameObject.Update();
-	gameObject2.Update();*/
+		//gameObject.Update();
+		//gameObject2.Update();
 
 		gameScene->Update();
 
@@ -423,9 +427,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		//プリミティブ形状の設定コマンド
 		dx12base.GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		/*gameObject.Draw();
-		gameObject2.Draw();*/
-
+		//gameObject.Draw();
+		//gameObject2.Draw();
 
 		gameScene->Draw();
 #pragma endregion
@@ -447,29 +450,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	//}
 
 	//ウィンドウクラス登録解除
-	UnregisterClass(winApp_.w.lpszClassName, winApp_.w.hInstance);
+	UnregisterClass(winApp_.w.lpszClassName , winApp_.w.hInstance);
 #pragma endregion//メッセージループ
 
 	return 0;
 }
-
-
-#pragma region//関数の定義
-void MoveObject3d(GameObject3D* object, BYTE key[256]) {
-	if (key[DIK_UP] || key[DIK_DOWN] || key[DIK_RIGHT] || key[DIK_LEFT]) {
-
-		if (key[DIK_UP]) {
-			object->worldTransform.translation.y += 1.0f;
-		}
-		if (key[DIK_DOWN]) {
-			object->worldTransform.translation.y -= 1.0f;
-		}
-		if (key[DIK_RIGHT]) {
-			object->worldTransform.translation.x += 1.0f;
-		}
-		if (key[DIK_LEFT]) {
-			object->worldTransform.translation.x -= 1.0f;
-		}
-	}
-}
-#pragma endregion//関数の定義
