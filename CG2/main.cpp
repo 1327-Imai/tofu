@@ -1,7 +1,6 @@
 #include <random>
 #include <DirectXTex.h>
 
-=======
 #include <xaudio2.h>
 #pragma comment(lib,"xaudio2.lib")
 #include <fstream>
@@ -16,8 +15,6 @@
 #include "input.h"
 #include "ViewProjection.h"
 
-WinApp winApp_;
-=======
 #include "Audio.h"
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -44,6 +41,7 @@ std::uniform_real_distribution<float> distRot(0, XMConvertToRadians(360.0f));
 //ウィンドウプロシーシャ
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
+void MoveObject3d(GameObject3D* object , BYTE key[256]);
 
 #pragma endregion//関数のプロトタイプ宣言
 

@@ -1,120 +1,124 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="BasicPS.hlsl">
-      <Filter>shader</Filter>
-    </FxCompile>
     <FxCompile Include="BasicVS.hlsl">
-      <Filter>shader</Filter>
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="BasicPS.hlsl">
+      <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WinApp.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="WorldTransform.cpp">
-      <Filter>source</Filter>
+      <Filter>Srouce</Filter>
     </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>source</Filter>
+    <ClCompile Include="WinApp.cpp">
+      <Filter>Srouce</Filter>
     </ClCompile>
     <ClCompile Include="ViewProjection.cpp">
-      <Filter>source</Filter>
+      <Filter>Srouce</Filter>
     </ClCompile>
-    <ClCompile Include="Vector4.cpp">
-      <Filter>source\math</Filter>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Srouce</Filter>
     </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>source\math</Filter>
+    <ClCompile Include="Model.cpp">
+      <Filter>Srouce</Filter>
     </ClCompile>
-    <ClCompile Include="Vector3.cpp">
-      <Filter>source\math</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>Srouce</Filter>
     </ClCompile>
-    <ClCompile Include="Matrix4.cpp">
-      <Filter>source\math</Filter>
+    <ClCompile Include="Input.cpp">
+      <Filter>Srouce</Filter>
     </ClCompile>
-    <ClCompile Include="MathFunc.cpp">
-      <Filter>source\math</Filter>
+    <ClCompile Include="GameObject3D.cpp">
+      <Filter>Srouce</Filter>
     </ClCompile>
     <ClCompile Include="DX12base.cpp">
-      <Filter>source</Filter>
+      <Filter>Srouce</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject3D.cpp" />
-    <ClCompile Include="Texture.cpp">
-=======
     <ClCompile Include="Audio.cpp">
-      <Filter>source</Filter>
+      <Filter>Srouce</Filter>
+    </ClCompile>
+    <ClCompile Include="MathFunc.cpp">
+      <Filter>Srouce\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix4.cpp">
+      <Filter>Srouce\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Srouce\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>Srouce\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector4.cpp">
+      <Filter>Srouce\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Input.h">
-      <Filter>hedder</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>hedder</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewProjection.h">
-      <Filter>hedder</Filter>
-    </ClInclude>
-    <ClInclude Include="WinApp.h">
-      <Filter>hedder</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldTransform.h">
-      <Filter>hedder</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector4.h">
-      <Filter>hedder\math</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>hedder\math</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector3.h">
-      <Filter>hedder\math</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix4.h">
-      <Filter>hedder\math</Filter>
-    </ClInclude>
-    <ClInclude Include="MathFunc.h">
-      <Filter>hedder\math</Filter>
+    <ClInclude Include="Audio.h">
+      <Filter>Hedder</Filter>
     </ClInclude>
     <ClInclude Include="DX12base.h">
-      <Filter>hedder</Filter>
+      <Filter>Hedder</Filter>
     </ClInclude>
     <ClInclude Include="GameObject3D.h">
-      <Filter>hedder</Filter>
+      <Filter>Hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Hedder</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-=======
-    <ClInclude Include="Audio.h">
-      <Filter>hedder</Filter>
+      <Filter>Hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewProjection.h">
+      <Filter>Hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="WinApp.h">
+      <Filter>Hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldTransform.h">
+      <Filter>Hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="MathFunc.h">
+      <Filter>Hedder\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix4.h">
+      <Filter>Hedder\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Hedder\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Hedder\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector4.h">
+      <Filter>Hedder\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="source">
-      <UniqueIdentifier>{7299fcc6-685c-4ab1-b615-e973a29d3104}</UniqueIdentifier>
+    <Filter Include="Hedder">
+      <UniqueIdentifier>{d001cf84-ddef-4f7d-be27-e6d55f9067a7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="hedder">
-      <UniqueIdentifier>{806800b6-85b7-449a-9bc2-deb17ea88dfd}</UniqueIdentifier>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{d07adb4a-ee96-4b6d-9585-5192f3a19326}</UniqueIdentifier>
     </Filter>
-    <Filter Include="shader">
-      <UniqueIdentifier>{4de0aadc-9648-4474-a1f4-5392aefebca1}</UniqueIdentifier>
+    <Filter Include="Hedder\Math">
+      <UniqueIdentifier>{85459644-e2f0-487b-864c-3dab80f1cb0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\math">
-      <UniqueIdentifier>{ff10a3fb-0e9e-4616-80bd-b6be1fadbf5d}</UniqueIdentifier>
+    <Filter Include="Srouce">
+      <UniqueIdentifier>{813cb8ef-ab2c-40fa-ab9a-bf247185e16a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="hedder\math">
-      <UniqueIdentifier>{3b626bdf-15d8-4e93-8826-c2ce609adba7}</UniqueIdentifier>
+    <Filter Include="Srouce\Math">
+      <UniqueIdentifier>{dc5fa03c-e360-4828-8a43-b24ffb8d25c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli">
-      <Filter>shader</Filter>
+      <Filter>Shader</Filter>
     </None>
   </ItemGroup>
 </Project>
