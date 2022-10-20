@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Audio.cpp" />
     <ClCompile Include="DX12base.cpp" />
     <ClCompile Include="GameObject3D.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -179,6 +180,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Audio.h" />
     <ClInclude Include="DX12base.h" />
     <ClInclude Include="GameObject3D.h" />
     <ClInclude Include="Input.h" />
