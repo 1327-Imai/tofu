@@ -45,6 +45,9 @@
     <ClCompile Include="DX12base.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject3D.cpp" />
+    <ClCompile Include="Texture.cpp">
+=======
     <ClCompile Include="Audio.cpp">
       <Filter>source</Filter>
     </ClCompile>
@@ -83,6 +86,11 @@
     <ClInclude Include="DX12base.h">
       <Filter>hedder</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject3D.h">
+      <Filter>hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+=======
     <ClInclude Include="Audio.h">
       <Filter>hedder</Filter>
     </ClInclude>

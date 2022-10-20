@@ -143,9 +143,11 @@
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="DX12base.cpp" />
+    <ClCompile Include="GameObject3D.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="ViewProjection.cpp" />
     <ClCompile Include="MathFunc.cpp" />
     <ClCompile Include="Matrix4.cpp" />
@@ -180,8 +182,10 @@
   <ItemGroup>
     <ClInclude Include="Audio.h" />
     <ClInclude Include="DX12base.h" />
+    <ClInclude Include="GameObject3D.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="ViewProjection.h" />
     <ClInclude Include="MathFunc.h" />
     <ClInclude Include="Matrix4.h" />

@@ -3,12 +3,14 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 
+#include "Vector2.h"
 #include "Vector3.h"
+#include "Vector4.h"
 #include "Matrix4.h"
 
 namespace MathFunc {
 
-	const float PI = 3.141592;
+	const float PI = 3.141592f;
 
 	namespace Affine {
 		//ワールド変換行列を設定する関数
@@ -35,7 +37,7 @@ namespace MathFunc {
 		float Rad2Deg(float rad);	//弧度法を度数法に変換する関数
 
 		//ベクトルと行列の掛け算をする関数
-		Vector3 MulVector3AndMatrix4(Vector3 vec , Matrix4 mat);
+		//Vector3 MulVector3AndMatrix4(Vector3 vec , Matrix4 mat);
 	}
 
 }
