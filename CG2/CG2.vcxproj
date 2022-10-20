@@ -144,6 +144,7 @@
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="DX12base.cpp" />
     <ClCompile Include="GameObject3D.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Audio.h" />
     <ClInclude Include="DX12base.h" />
     <ClInclude Include="GameObject3D.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Texture.h" />

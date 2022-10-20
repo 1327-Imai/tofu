@@ -54,6 +54,9 @@
     <ClCompile Include="Vector4.cpp">
       <Filter>Srouce\Math</Filter>
     </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Hedder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h">
@@ -97,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="Vector4.h">
       <Filter>Hedder\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Hedder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,8 @@
 #include "input.h"
 #include "ViewProjection.h"
 
+#include "GameScene.h"
+
 #include "Audio.h"
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
@@ -41,7 +43,7 @@ std::uniform_real_distribution<float> distRot(0, XMConvertToRadians(360.0f));
 //ウィンドウプロシーシャ
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-void MoveObject3d(GameObject3D* object , BYTE key[256]);
+void MoveObject3d(GameObject3D* object, BYTE key[256]);
 
 #pragma endregion//関数のプロトタイプ宣言
 
@@ -50,7 +52,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	//WindowsAPI初期化処理
 	winApp_.Initialize();
+
 	Input* input_ = new Input;
+	GameScene* gameScene = nullptr;
+
 
 #pragma endregion//ウィンドウの生成
 
@@ -63,7 +68,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	soundManager_.Initialize();
 	//音声再生
 	soundManager_.SoundPlayWave(soundManager_.xAudio2.Get(), soundData1, false, 0.01f);
-	
+
 	DX12base dx12base;
 	dx12base.SetWinApp(&winApp_);
 	dx12base.Initialize();
@@ -74,6 +79,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	input_->DirectInputCreate(winApp_);
 #pragma endregion
+
+	// ゲームシーンの初期化
+	gameScene = new GameScene();
+	gameScene->Initialize(&dx12base, input_,&winApp_);
 
 
 #pragma region//描画初期化処理
@@ -307,18 +316,18 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	//);
 
 	//透視投影変換行列の計算
-	XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
+	/*XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(45.0),
 		(float)winApp_.window_width / winApp_.window_height,
 		0.1f, 1000.0f
-	);
+	);*/
 
 #pragma endregion
 
 #pragma region//ビュー変換行列
-	ViewProjection viewProjection_;
+	/*ViewProjection viewProjection_;
 	viewProjection_.Initialize();
-	viewProjection_.UpdateView();
+	viewProjection_.UpdateView();*/
 
 	float angle = 0.0f;
 
@@ -330,9 +339,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	const size_t kObjectCount = 50;
 
 
-	GameObject3D gameObject;
+	//GameObject3D gameObject;
 
-	gameObject.SetDX12Base(&dx12base);
+	/*gameObject.SetDX12Base(&dx12base);
 	gameObject.PreLoadTexture(L"Resources/texture.jpg");
 	gameObject.Initialize();
 	gameObject.SetViewProjection(&viewProjection_);
@@ -343,7 +352,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	gameObject2.SetDX12Base(&dx12base);
 	gameObject2.Initialize();
 	gameObject2.SetViewProjection(&viewProjection_);
-	gameObject2.SetMatProjection(&matProjection);
+	gameObject2.SetMatProjection(&matProjection);*/
 
 #pragma endregion
 
@@ -374,30 +383,31 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 		//ビュー変換
 		//いずれかのキーを押していたら
-		if (input_->PushKey(DIK_D) || input_->PushKey(DIK_A)) {
+		//if (input_->PushKey(DIK_D) || input_->PushKey(DIK_A)) {
 
-			//押したキーに応じてangleを増減させる
-			if (input_->PushKey(DIK_D)) {
-				angle += XMConvertToRadians(1.0f);
-			}
-			if (input_->PushKey(DIK_A)) {
-				angle -= XMConvertToRadians(1.0f);
-			}
+		//	//押したキーに応じてangleを増減させる
+		//	if (input_->PushKey(DIK_D)) {
+		//		angle += XMConvertToRadians(1.0f);
+		//	}
+		//	if (input_->PushKey(DIK_A)) {
+		//		angle -= XMConvertToRadians(1.0f);
+		//	}
 
 			//angleラジアンだけY軸周りに回転。半径は-100
-			viewProjection_.eye.x = -100 * sinf(angle);
-			viewProjection_.eye.z = -100 * cosf(angle);
+			//viewProjection_.eye.x = -100 * sinf(angle);
+			//viewProjection_.eye.z = -100 * cosf(angle);
 
-			//ビュー変換行列を作り直す
-			viewProjection_.UpdateView();
+			////ビュー変換行列を作り直す
+			//viewProjection_.UpdateView();
 
-		}
+	//}
 
-		MoveObject3d(&gameObject , input_->key);
+	/*MoveObject3d(&gameObject , input_->key);
 
-		gameObject.Update();
-		gameObject2.Update();
+	gameObject.Update();
+	gameObject2.Update();*/
 
+		gameScene->Update();
 
 #pragma endregion//更新処理
 
@@ -413,9 +423,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		//プリミティブ形状の設定コマンド
 		dx12base.GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		gameObject.Draw();
-		gameObject2.Draw();
+		/*gameObject.Draw();
+		gameObject2.Draw();*/
 
+
+		gameScene->Draw();
 #pragma endregion
 
 		//描画後処理
@@ -425,6 +437,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	}
 #pragma endregion//ゲームループ
+
 
 	//ID3D12DebugDevice* debugInterface;
 
@@ -442,7 +455,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 
 #pragma region//関数の定義
-void MoveObject3d(GameObject3D* object , BYTE key[256]) {
+void MoveObject3d(GameObject3D* object, BYTE key[256]) {
 	if (key[DIK_UP] || key[DIK_DOWN] || key[DIK_RIGHT] || key[DIK_LEFT]) {
 
 		if (key[DIK_UP]) {
