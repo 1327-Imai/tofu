@@ -8,7 +8,9 @@
 #include <DirectXTex.h>
 #include <math.h>
 #include <random>
-
+#include <xaudio2.h>
+#pragma comment(lib,"xaudio2.lib")
+#include <fstream>
 #include "DX12base.h"
 #include "Model.h"
 #include "WorldTransform.h"
@@ -20,12 +22,13 @@
 #include "WinApp.h"
 #include "input.h"
 #include "ViewProjection.h"
+#include "Audio.h"
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"d3dcompiler")
 
 WinApp winApp_;
-
+SoundManager soundManager_;
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
@@ -36,10 +39,10 @@ std::random_device seed_gen;
 //メルセンヌ・ツイスターの乱数エンジン
 std::mt19937_64 engine(seed_gen());
 //乱数範囲の指定
-std::uniform_real_distribution<float> distPosX(-100.0 , 100.0);
-std::uniform_real_distribution<float> distPosY(-50.0 , 50.0);
-std::uniform_real_distribution<float> distPosZ(30.0 , 60.0);
-std::uniform_real_distribution<float> distRot(0 , XMConvertToRadians(360.0f));
+std::uniform_real_distribution<float> distPosX(-100.0, 100.0);
+std::uniform_real_distribution<float> distPosY(-50.0, 50.0);
+std::uniform_real_distribution<float> distPosZ(30.0, 60.0);
+std::uniform_real_distribution<float> distRot(0, XMConvertToRadians(360.0f));
 
 #pragma region//構造体
 
@@ -69,16 +72,16 @@ struct Object3D {
 
 #pragma region//関数のプロトタイプ宣言
 //ウィンドウプロシーシャ
-LRESULT WindowProc(HWND hwnd , UINT msg , WPARAM wparam , LPARAM lparam);
+LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 //3Dオブジェクト初期化
-void InitializeObject3d(Object3D* object , ComPtr<ID3D12Device> device);
+void InitializeObject3d(Object3D* object, ComPtr<ID3D12Device> device);
 
-void UpdateObject3d(Object3D* object , ViewProjection viewProjection , XMMATRIX& matProjection);
+void UpdateObject3d(Object3D* object, ViewProjection viewProjection, XMMATRIX& matProjection);
 
-void DrawObject3d(Object3D* object , DX12base dx12base , Model model);
+void DrawObject3d(Object3D* object, DX12base dx12base, Model model);
 
-void MoveObject3d(Object3D* object , BYTE key[256]);
+void MoveObject3d(Object3D* object, BYTE key[256]);
 
 void SetRandomPositionObject3d(Object3D* object);
 void SetRandomRotateObject3d(Object3D* object);
@@ -86,7 +89,7 @@ void SetRandomRotateObject3d(Object3D* object);
 #pragma endregion//関数のプロトタイプ宣言
 
 //main関数
-int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) {
+int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	//WindowsAPI初期化処理
 	winApp_.Initialize();
@@ -97,7 +100,13 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 #pragma region//メッセージループ
 
 	HRESULT result;
-
+	//音声読み込み
+	SoundData soundData1 = soundManager_.SoundLoadWave("Resources/Alarm01.wav");
+	//XAudioエンジンのインスタンスを生成
+	soundManager_.Initialize();
+	//音声再生
+	soundManager_.SoundPlayWave(soundManager_.xAudio2.Get(), soundData1, false, 0.01f);
+	
 	DX12base dx12base;
 	dx12base.SetWinApp(&winApp_);
 	dx12base.Initialize();
@@ -129,14 +138,14 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 	// 頂点シェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"BasicVS.hlsl" ,									//シェーダーファイル名
-		nullptr ,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE ,					//インクルード可能にする
-		"main" ,											//エントリーポイント名
-		"vs_5_0" ,											//シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION ,	//デバッグ用設定
-		0 ,
-		&vsBlob ,
+		L"BasicVS.hlsl",									//シェーダーファイル名
+		nullptr,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE,					//インクルード可能にする
+		"main",											//エントリーポイント名
+		"vs_5_0",											//シェーダーモデル指定
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,	//デバッグ用設定
+		0,
+		&vsBlob,
 		&errorBlob
 	);
 
@@ -147,9 +156,9 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 		std::string error;
 		error.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char*)errorBlob->GetBufferPointer() ,
-					errorBlob->GetBufferSize() ,
-					error.begin());
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
+			errorBlob->GetBufferSize(),
+			error.begin());
 		error += "\n";
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(error.c_str());
@@ -160,14 +169,14 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 #pragma region//ピクセルシェーダー
 	//ピクセルシェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"BasicPS.hlsl" ,									//シェーダーファイル名
-		nullptr ,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE ,					//インクルード可能にする
-		"main" ,												//エントリーポイント名
-		"ps_5_0" ,											//シェーダーモデル設定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION ,	//デバッグ用設定
-		0 ,
-		&psBlob ,
+		L"BasicPS.hlsl",									//シェーダーファイル名
+		nullptr,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE,					//インクルード可能にする
+		"main",												//エントリーポイント名
+		"ps_5_0",											//シェーダーモデル設定
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,	//デバッグ用設定
+		0,
+		&psBlob,
 		&errorBlob
 	);
 
@@ -178,9 +187,9 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 		std::string error;
 		error.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char*)errorBlob->GetBufferPointer() ,
-					errorBlob->GetBufferSize() ,
-					error.begin());
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
+			errorBlob->GetBufferSize(),
+			error.begin());
 		error += "\n";
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(error.c_str());
@@ -316,16 +325,16 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	//ルートシグネチャのシリアライズ
 	ComPtr<ID3DBlob> rootSigBlob = nullptr;
 	result = D3D12SerializeRootSignature(
-		&rootSignatureDesc ,
-		D3D_ROOT_SIGNATURE_VERSION_1_0 ,
-		&rootSigBlob ,
+		&rootSignatureDesc,
+		D3D_ROOT_SIGNATURE_VERSION_1_0,
+		&rootSigBlob,
 		&errorBlob);
 	assert(SUCCEEDED(result));
 
 	result = dx12base.GetDevice()->CreateRootSignature(
-		0 ,
-		rootSigBlob->GetBufferPointer() ,
-		rootSigBlob->GetBufferSize() ,
+		0,
+		rootSigBlob->GetBufferPointer(),
+		rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(result));
 
@@ -335,7 +344,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 	//パイプラインステートの生成
 	ComPtr<ID3D12PipelineState> pipelineState = nullptr;
-	result = dx12base.GetDevice()->CreateGraphicsPipelineState(&pipelineDesc , IID_PPV_ARGS(&pipelineState));
+	result = dx12base.GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 
 #pragma region//定数バッファ
@@ -358,23 +367,23 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
 	//定数バッファの生成
 	result = dx12base.GetDevice()->CreateCommittedResource(
-		&cbHeapProp ,	//ヒープ設定
-		D3D12_HEAP_FLAG_NONE ,
-		&cbResourceDesc ,	//リソース設定
-		D3D12_RESOURCE_STATE_GENERIC_READ ,
-		nullptr ,
+		&cbHeapProp,	//ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&cbResourceDesc,	//リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
 		IID_PPV_ARGS(&constBuffMaterial)
 	);
 	assert(SUCCEEDED(result));
 
 	//定数バッファのマッピング
 	ConstBufferDataMaterial* constMapMaterial = nullptr;
-	result = constBuffMaterial->Map(0 , nullptr , (void**)&constMapMaterial); // マッピング
+	result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial); // マッピング
 	assert(SUCCEEDED(result));
 
 	//定数バッファへのデータ転送
 	//値を書き込むと自動的に転送される
-	constMapMaterial->color = Vector4(1.0f , 1.0f , 1.0f , 0.5f);
+	constMapMaterial->color = Vector4(1.0f, 1.0f, 1.0f, 0.5f);
 
 	//定数バッファの生成
 	{
@@ -408,9 +417,9 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 	//透視投影変換行列の計算
 	XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
-		XMConvertToRadians(45.0) ,
-		(float)winApp_.window_width / winApp_.window_height ,
-		0.1f , 1000.0f
+		XMConvertToRadians(45.0),
+		(float)winApp_.window_width / winApp_.window_height,
+		0.1f, 1000.0f
 	);
 
 #pragma endregion
@@ -434,7 +443,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	for (int i = 0; i < _countof(object3ds); i++) {
 
 		//初期化
-		InitializeObject3d(&object3ds[i] , dx12base.GetDevice());
+		InitializeObject3d(&object3ds[i], dx12base.GetDevice());
 
 		object3ds[i].worldTransform.initialize();
 
@@ -467,9 +476,9 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	ScratchImage scratchImg{};
 	//WICテクスチャのロード
 	result = LoadFromWICFile(
-		L"Resources/texture.jpg" ,
-		WIC_FLAGS_NONE ,
-		&metadata ,
+		L"Resources/texture.jpg",
+		WIC_FLAGS_NONE,
+		&metadata,
 		scratchImg
 	);
 
@@ -478,9 +487,9 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	ScratchImage scratchImg2{};
 	//WICテクスチャのロード
 	result = LoadFromWICFile(
-		L"Resources/reimu.png" ,
-		WIC_FLAGS_NONE ,
-		&metadata2 ,
+		L"Resources/reimu.png",
+		WIC_FLAGS_NONE,
+		&metadata2,
 		scratchImg2
 	);
 
@@ -488,11 +497,11 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	ScratchImage mipChain{};
 	//ミップマップ生成
 	result = GenerateMipMaps(
-		scratchImg.GetImages() ,
-		scratchImg.GetImageCount() ,
-		scratchImg.GetMetadata() ,
-		TEX_FILTER_DEFAULT ,
-		0 ,
+		scratchImg.GetImages(),
+		scratchImg.GetImageCount(),
+		scratchImg.GetMetadata(),
+		TEX_FILTER_DEFAULT,
+		0,
 		mipChain
 	);
 	if (SUCCEEDED(result)) {
@@ -505,11 +514,11 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	ScratchImage mipChain2{};
 	//ミップマップ生成
 	result = GenerateMipMaps(
-		scratchImg2.GetImages() ,
-		scratchImg2.GetImageCount() ,
-		scratchImg2.GetMetadata() ,
-		TEX_FILTER_DEFAULT ,
-		0 ,
+		scratchImg2.GetImages(),
+		scratchImg2.GetImageCount(),
+		scratchImg2.GetMetadata(),
+		TEX_FILTER_DEFAULT,
+		0,
 		mipChain2
 	);
 	if (SUCCEEDED(result)) {
@@ -549,11 +558,11 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	//テクスチャバッファの生成
 	ComPtr<ID3D12Resource> texBuff = nullptr;
 	result = dx12base.GetDevice()->CreateCommittedResource(
-		&textureHeapProp ,	//ヒープ設定
-		D3D12_HEAP_FLAG_NONE ,
-		&textureResouceDesc ,	//リソース設定
-		D3D12_RESOURCE_STATE_GENERIC_READ ,
-		nullptr ,
+		&textureHeapProp,	//ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&textureResouceDesc,	//リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
 		IID_PPV_ARGS(&texBuff)
 	);
 	assert(SUCCEEDED(result));
@@ -561,11 +570,11 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	//テクスチャバッファの生成
 	ComPtr<ID3D12Resource> texBuff2 = nullptr;
 	result = dx12base.GetDevice()->CreateCommittedResource(
-		&textureHeapProp ,	//ヒープ設定
-		D3D12_HEAP_FLAG_NONE ,
-		&textureResouceDesc2 ,	//リソース設定
-		D3D12_RESOURCE_STATE_GENERIC_READ ,
-		nullptr ,
+		&textureHeapProp,	//ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&textureResouceDesc2,	//リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
 		IID_PPV_ARGS(&texBuff2)
 	);
 	assert(SUCCEEDED(result));
@@ -574,13 +583,13 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	//全ミップマップについて
 	for (size_t i = 0; i < metadata.mipLevels; i++) {
 		//ミップマップレベルを指定してイメージを取得
-		const Image* img = scratchImg.GetImage(i , 0 , 0);
+		const Image* img = scratchImg.GetImage(i, 0, 0);
 		//テクスチャバッファにデータ転送
 		result = texBuff->WriteToSubresource(
-			(UINT)i ,
-			nullptr ,				//全領域へコピー
-			img->pixels ,			//元データアドレス
-			(UINT)img->rowPitch ,	//1ラインサイズ
+			(UINT)i,
+			nullptr,				//全領域へコピー
+			img->pixels,			//元データアドレス
+			(UINT)img->rowPitch,	//1ラインサイズ
 			(UINT)img->slicePitch	//1枚サイズ
 		);
 		assert(SUCCEEDED(result));
@@ -589,13 +598,13 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	//全ミップマップについて
 	for (size_t i = 0; i < metadata2.mipLevels; i++) {
 		//ミップマップレベルを指定してイメージを取得
-		const Image* img2 = scratchImg2.GetImage(i , 0 , 0);
+		const Image* img2 = scratchImg2.GetImage(i, 0, 0);
 		//テクスチャバッファにデータ転送
 		result = texBuff2->WriteToSubresource(
-			(UINT)i ,
-			nullptr ,				//全領域へコピー
-			img2->pixels ,			//元データアドレス
-			(UINT)img2->rowPitch ,	//1ラインサイズ
+			(UINT)i,
+			nullptr,				//全領域へコピー
+			img2->pixels,			//元データアドレス
+			(UINT)img2->rowPitch,	//1ラインサイズ
 			(UINT)img2->slicePitch	//1枚サイズ
 		);
 		assert(SUCCEEDED(result));
@@ -617,7 +626,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	//設定をもとにSRV用デスクリプタヒープを生成
 	ComPtr<ID3D12DescriptorHeap> srvHeap;
 	result = dx12base.GetDevice()->CreateDescriptorHeap(
-		&srvHeapDesc ,
+		&srvHeapDesc,
 		IID_PPV_ARGS(&srvHeap)
 	);
 	assert(SUCCEEDED(result));
@@ -635,7 +644,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	srvDesc.Texture2D.MipLevels = model.GetResDesc().MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
-	dx12base.GetDevice()->CreateShaderResourceView(texBuff.Get() , &srvDesc , srvHandle);
+	dx12base.GetDevice()->CreateShaderResourceView(texBuff.Get(), &srvDesc, srvHandle);
 
 	//二枚目
 	//SRVヒープの先頭ハンドルを取得
@@ -651,7 +660,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	srvDesc2.Texture2D.MipLevels = textureResouceDesc2.MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
-	dx12base.GetDevice()->CreateShaderResourceView(texBuff2.Get() , &srvDesc2 , srvHandle);
+	dx12base.GetDevice()->CreateShaderResourceView(texBuff2.Get(), &srvDesc2, srvHandle);
 
 #pragma endregion
 
@@ -662,7 +671,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 #pragma region//ウィンドウメッセージ処理
 		//メッセージがある?
-		if (PeekMessage(&winApp_.msg , nullptr , 0 , 0 , PM_REMOVE)) {
+		if (PeekMessage(&winApp_.msg, nullptr, 0, 0, PM_REMOVE)) {
 			TranslateMessage(&winApp_.msg);	//キー入力メッセージの処理
 			DispatchMessage(&winApp_.msg);	//プロシーシャにメッセージを送る
 		}
@@ -701,10 +710,10 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 		}
 
-		MoveObject3d(&object3ds[0] , input_->key);
+		MoveObject3d(&object3ds[0], input_->key);
 
 		for (int i = 0; i < _countof(object3ds); i++) {
-			UpdateObject3d(&object3ds[i] , viewProjection_ , matProjection);
+			UpdateObject3d(&object3ds[i], viewProjection_, matProjection);
 		}
 
 #pragma endregion//更新処理
@@ -724,10 +733,10 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 		model.Draw();
 
 		//頂点バッファ―ビューをセットするコマンド
-		dx12base.GetCmdList()->SetGraphicsRootConstantBufferView(0 , constBuffMaterial->GetGPUVirtualAddress());
+		dx12base.GetCmdList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
 
 		//SRVヒープの設定コマンド
-		dx12base.GetCmdList()->SetDescriptorHeaps(1 , srvHeap.GetAddressOf());
+		dx12base.GetCmdList()->SetDescriptorHeaps(1, srvHeap.GetAddressOf());
 
 		//SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
 		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
@@ -735,13 +744,14 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 		if (input_->PushKey(DIK_SPACE)) {
 			//二枚目を指し示すように差し込む
 			srvGpuHandle.ptr += incremantSize;
+			soundManager_.StopWave(soundData1);
 		}
 
 		//SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
-		dx12base.GetCmdList()->SetGraphicsRootDescriptorTable(1 , srvGpuHandle);
+		dx12base.GetCmdList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 		for (int i = 0; i < _countof(object3ds); i++) {
-			DrawObject3d(&object3ds[i] , dx12base , model);
+			DrawObject3d(&object3ds[i], dx12base, model);
 		}
 
 #pragma endregion
@@ -762,7 +772,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	//}
 
 	//ウィンドウクラス登録解除
-	UnregisterClass(winApp_.w.lpszClassName , winApp_.w.hInstance);
+	UnregisterClass(winApp_.w.lpszClassName, winApp_.w.hInstance);
 #pragma endregion//メッセージループ
 
 	return 0;
@@ -772,7 +782,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 #pragma region//関数の定義
 
 //3Dオブジェクト初期化
-void InitializeObject3d(Object3D* object , ComPtr<ID3D12Device> device) {
+void InitializeObject3d(Object3D* object, ComPtr<ID3D12Device> device) {
 
 	HRESULT result;
 
@@ -794,22 +804,22 @@ void InitializeObject3d(Object3D* object , ComPtr<ID3D12Device> device) {
 	ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
 	//定数バッファの生成
 	result = device.Get()->CreateCommittedResource(
-		&cbHeapProp ,	//ヒープ設定
-		D3D12_HEAP_FLAG_NONE ,
-		&cbResourceDesc ,	//リソース設定
-		D3D12_RESOURCE_STATE_GENERIC_READ ,
-		nullptr ,
+		&cbHeapProp,	//ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&cbResourceDesc,	//リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
 		IID_PPV_ARGS(&object->constBuffTransform)
 	);
 	assert(SUCCEEDED(result));
 
 	//定数バッファのマッピング
-	result = object->constBuffTransform->Map(0 , nullptr , (void**)&object->constMapTransform); // マッピング
+	result = object->constBuffTransform->Map(0, nullptr, (void**)&object->constMapTransform); // マッピング
 	assert(SUCCEEDED(result));
 
 }
 
-void UpdateObject3d(Object3D* object , ViewProjection viewProjection , XMMATRIX& matProjection) {
+void UpdateObject3d(Object3D* object, ViewProjection viewProjection, XMMATRIX& matProjection) {
 
 	object->worldTransform.UpdateMatWorld();
 
@@ -820,15 +830,15 @@ void UpdateObject3d(Object3D* object , ViewProjection viewProjection , XMMATRIX&
 
 }
 
-void DrawObject3d(Object3D* object , DX12base dx12base , Model model) {
+void DrawObject3d(Object3D* object, DX12base dx12base, Model model) {
 
 	//定数バッファビュー(CBV)の設定コマンド
-	dx12base.GetCmdList()->SetGraphicsRootConstantBufferView(2 , object->constBuffTransform->GetGPUVirtualAddress());
+	dx12base.GetCmdList()->SetGraphicsRootConstantBufferView(2, object->constBuffTransform->GetGPUVirtualAddress());
 
 	model.Draw();
 }
 
-void MoveObject3d(Object3D* object , BYTE key[256]) {
+void MoveObject3d(Object3D* object, BYTE key[256]) {
 	if (key[DIK_UP] || key[DIK_DOWN] || key[DIK_RIGHT] || key[DIK_LEFT]) {
 
 		if (key[DIK_UP]) {
