@@ -45,6 +45,9 @@
     <ClCompile Include="DX12base.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -78,6 +81,9 @@
       <Filter>hedder\math</Filter>
     </ClInclude>
     <ClInclude Include="DX12base.h">
+      <Filter>hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
       <Filter>hedder</Filter>
     </ClInclude>
   </ItemGroup>
