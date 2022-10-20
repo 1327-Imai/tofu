@@ -10,6 +10,6 @@ float4 main(VSOutput input) : SV_TARGET{
 	float brightness = diffuse + 0.3;
 
 	float4 texcolor = float4(tex.Sample(smp , input.uv));
-	return float4(texcolor.rgb * brightness , texcolor.a) * color;
+	return float4(texcolor.rgb /** brightness*/ , texcolor.a) * color;
 
 }

@@ -56,7 +56,7 @@ private:
 	DX12base* dx12base = nullptr;
 
 	//モデルのファイル形式
-	char fileType[5];
+	char fileType[5]={0};
 
 	// 頂点データ配列
 	std::vector<Vertex> vertices;

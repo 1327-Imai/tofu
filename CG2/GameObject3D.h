@@ -1,6 +1,7 @@
 #pragma once
 #include "WorldTransform.h"
 #include "Model.h"
+#include "Texture.h"
 
 #include "MathFunc.h"
 #include "Vector2.h"
@@ -16,6 +17,9 @@ class GameObject3D {
 
 public:
 	//メンバ変数
+	void PreLoadModel(const char* modelFileName);
+	void PreLoadTexture(const wchar_t* textureFileName);
+
 	void Initialize();
 
 	void Update();
@@ -24,12 +28,15 @@ public:
 
 	//アクセッサ
 	void SetDX12Base(DX12base* dx12base);
-	//void LoadModel(Model* model);
 	void SetViewProjection(ViewProjection* viewProjection);
 	void SetMatProjection(XMMATRIX* matProjection);
 
 private:
+	void InitializeConstMapTransform();
+	void InitializeConstMapMaterial();
+
 	//構造体
+private:
 	//定数バッファ用データ構造体(マテリアル)
 	struct ConstBufferDataMaterial {
 		Vector4 color; //色(RGBA)
@@ -45,12 +52,17 @@ public:
 	//ワールド変換
 	WorldTransform worldTransform;
 
-	//モデルのファイル名
-	char* modelFileName = nullptr;
 
 private:
 	//モデル
 	Model model;
+	//モデルのファイル名
+	const char* modelFileName = nullptr;
+
+	//テクスチャ
+	Texture textrue;
+	//モデルのファイル名
+	const wchar_t* textureFileName = nullptr;
 
 	//定数バッファ(行列用)
 	ComPtr<ID3D12Resource> constBuffTransform = nullptr;
@@ -58,10 +70,12 @@ private:
 	ConstBufferDataTransform* constMapTransform = nullptr;
 
 	//ヒープ設定
-	D3D12_HEAP_PROPERTIES cbHeapProp;
+	D3D12_HEAP_PROPERTIES cbTransformHeapProp;
+	D3D12_HEAP_PROPERTIES cbMaterialHeapProp{};
 
 	//リソース設定
-	D3D12_RESOURCE_DESC cbResourceDesc;
+	D3D12_RESOURCE_DESC cbTransformResourceDesc;
+	D3D12_RESOURCE_DESC cbMaterialResourceDesc{};
 
 	ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
 

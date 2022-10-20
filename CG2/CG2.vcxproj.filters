@@ -46,6 +46,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="GameObject3D.cpp" />
+    <ClCompile Include="Texture.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -82,6 +85,9 @@
       <Filter>hedder</Filter>
     </ClInclude>
     <ClInclude Include="GameObject3D.h">
+      <Filter>hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
       <Filter>hedder</Filter>
     </ClInclude>
   </ItemGroup>
