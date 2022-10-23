@@ -1,43 +1,24 @@
-#include <random>
-#include <DirectXTex.h>
-
-#include <xaudio2.h>
-#pragma comment(lib,"xaudio2.lib")
-#include <fstream>
+//#include <random>
 #include "DX12base.h"
-#include "Model.h"
-#include "WorldTransform.h"
-#include "GameObject3D.h"
-
-#include "MathFunc.h"
-
 #include "WinApp.h"
 #include "input.h"
-#include "ViewProjection.h"
-
 #include "GameScene.h"
 
-#include "Audio.h"
-#pragma comment(lib,"d3d12.lib")
-#pragma comment(lib,"dxgi.lib")
-#pragma comment(lib,"d3dcompiler")
-
 WinApp winApp_;
-SoundManager soundManager_;
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
 const double PI = 3.141592;
 
-//乱数シード生成器
-std::random_device seed_gen;
-//メルセンヌ・ツイスターの乱数エンジン
-std::mt19937_64 engine(seed_gen());
-//乱数範囲の指定
-std::uniform_real_distribution<float> distPosX(-100.0 , 100.0);
-std::uniform_real_distribution<float> distPosY(-50.0 , 50.0);
-std::uniform_real_distribution<float> distPosZ(30.0 , 60.0);
-std::uniform_real_distribution<float> distRot(0 , XMConvertToRadians(360.0f));
+////乱数シード生成器
+//std::random_device seed_gen;
+////メルセンヌ・ツイスターの乱数エンジン
+//std::mt19937_64 engine(seed_gen());
+////乱数範囲の指定
+//std::uniform_real_distribution<float> distPosX(-100.0 , 100.0);
+//std::uniform_real_distribution<float> distPosY(-50.0 , 50.0);
+//std::uniform_real_distribution<float> distPosZ(30.0 , 60.0);
+//std::uniform_real_distribution<float> distRot(0 , XMConvertToRadians(360.0f));
 
 #pragma region//関数のプロトタイプ宣言
 //ウィンドウプロシーシャ
@@ -56,20 +37,13 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	Input* input_ = new Input;
 	GameScene* gameScene = nullptr;
 
-
 #pragma endregion//ウィンドウの生成
 
 #pragma region//メッセージループ
 
 	HRESULT result;
-	//音声読み込み
-	SoundData soundData1 = soundManager_.SoundLoadWave("Resources/Alarm01.wav");
-	//XAudioエンジンのインスタンスを生成
-	soundManager_.Initialize();
-	//音声再生
-	soundManager_.SoundPlayWave(soundManager_.xAudio2.Get() , soundData1 , false , 0.01f);
 
-	DX12base dx12base;
+	DX12base& dx12base = DX12base::GetInstance();
 	dx12base.SetWinApp(&winApp_);
 	dx12base.Initialize();
 
@@ -80,9 +54,9 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	input_->DirectInputCreate(winApp_);
 #pragma endregion
 
-	//// ゲームシーンの初期化
-	//gameScene = new GameScene();
-	//gameScene->Initialize(&dx12base, input_,&winApp_);
+	// ゲームシーンの初期化
+	gameScene = new GameScene();
+	gameScene->Initialize(&dx12base, input_,&winApp_);
 
 
 #pragma region//描画初期化処理
@@ -315,49 +289,6 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	//	0.0f , 1.0f
 	//);
 
-	////透視投影変換行列の計算
-	//XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
-	//	XMConvertToRadians(45.0),
-	//	(float)winApp_.window_width / winApp_.window_height,
-	//	0.1f, 1000.0f
-	//);
-
-#pragma endregion
-
-#pragma region//ビュー変換行列
-	//ViewProjection viewProjection_;
-	//viewProjection_.Initialize();
-	//viewProjection_.UpdateView();
-
-	//float angle = 0.0f;
-
-#pragma endregion
-
-	// ゲームシーンの初期化
-	gameScene = new GameScene();
-	gameScene->Initialize(&dx12base , input_ , &winApp_);
-
-#pragma region//ワールド変換行列
-
-	//3Dオブジェクトの数
-	const size_t kObjectCount = 50;
-
-
-	//GameObject3D gameObject;
-
-	//gameObject.SetDX12Base(&dx12base);
-	//gameObject.PreLoadTexture(L"Resources/texture.jpg");
-	//gameObject.Initialize();
-	//gameObject.SetViewProjection(&viewProjection_);
-	//gameObject.SetMatProjection(&matProjection);
-
-	//GameObject3D gameObject2;
-
-	//gameObject2.SetDX12Base(&dx12base);
-	//gameObject2.Initialize();
-	//gameObject2.SetViewProjection(&viewProjection_);
-	//gameObject2.SetMatProjection(&matProjection);
-
 #pragma endregion
 
 #pragma endregion//描画初期化処理
@@ -385,32 +316,6 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 #pragma region//更新処理
 
-		////ビュー変換
-		////いずれかのキーを押していたら
-		//if (input_->PushKey(DIK_D) || input_->PushKey(DIK_A)) {
-
-		//	//押したキーに応じてangleを増減させる
-		//	if (input_->PushKey(DIK_D)) {
-		//		angle += XMConvertToRadians(1.0f);
-		//	}
-		//	if (input_->PushKey(DIK_A)) {
-		//		angle -= XMConvertToRadians(1.0f);
-		//	}
-
-		//	//angleラジアンだけY軸周りに回転。半径は - 100
-		//	viewProjection_.eye.x = -100 * sinf(angle);
-		//	viewProjection_.eye.z = -100 * cosf(angle);
-
-		//	//ビュー変換行列を作り直す
-		//	viewProjection_.UpdateView();
-
-		//}
-
-		//MoveObject3d(&gameObject , input_->key);
-
-		//gameObject.Update();
-		//gameObject2.Update();
-
 		gameScene->Update();
 
 #pragma endregion//更新処理
@@ -426,9 +331,6 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 		//プリミティブ形状の設定コマンド
 		dx12base.GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		//gameObject.Draw();
-		//gameObject2.Draw();
 
 		gameScene->Draw();
 #pragma endregion
@@ -448,6 +350,8 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	//	debugInterface->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL | D3D12_RLDO_IGNORE_INTERNAL);
 	//	debugInterface->Release();
 	//}
+
+	delete gameScene;
 
 	//ウィンドウクラス登録解除
 	UnregisterClass(winApp_.w.lpszClassName , winApp_.w.hInstance);

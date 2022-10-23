@@ -1,11 +1,5 @@
 #include "Model.h"
 
-class DX12base {
-public:
-	ComPtr<ID3D12GraphicsCommandList> GetCmdList();
-	ComPtr<ID3D12Device> GetDevice();
-};
-
 //メンバ関数
 void Model::LoadModel() {
 
@@ -208,7 +202,7 @@ void Model::Initialize() {
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//頂点バッファの生成
-	result = dx12base->GetDevice()->CreateCommittedResource(
+	result = dx12base.GetDevice()->CreateCommittedResource(
 		&heapProp ,	//ヒープ設定
 		D3D12_HEAP_FLAG_NONE ,
 		&resDesc ,	//リソース設定
@@ -219,7 +213,7 @@ void Model::Initialize() {
 	assert(SUCCEEDED(result));
 
 	//インデックスバッファの生成
-	result = dx12base->GetDevice()->CreateCommittedResource(
+	result = dx12base.GetDevice()->CreateCommittedResource(
 		&heapProp ,	//ヒープ設定
 		D3D12_HEAP_FLAG_NONE ,
 		&resDesc ,	//リソース設定
@@ -264,20 +258,16 @@ void Model::Initialize() {
 
 void Model::Draw() {
 	//頂点バッファビューの設定コマンド
-	dx12base->GetCmdList()->IASetVertexBuffers(0 , 1 , &vbView);
+	dx12base.GetCmdList()->IASetVertexBuffers(0 , 1 , &vbView);
 
 	//インデックスバッファビューの設定コマンド
-	dx12base->GetCmdList()->IASetIndexBuffer(&ibView);
+	dx12base.GetCmdList()->IASetIndexBuffer(&ibView);
 
 	//描画コマンド
-	dx12base->GetCmdList()->DrawIndexedInstanced(indices.size() , 1 , 0 , 0 , 0);
+	dx12base.GetCmdList()->DrawIndexedInstanced(indices.size() , 1 , 0 , 0 , 0);
 }
 
 //アクセッサ
-void Model::SetDx12Base(DX12base* dx12base) {
-	this->dx12base = dx12base;
-}
-
 D3D12_RESOURCE_DESC Model::GetResDesc() {
 	return resDesc;
 }

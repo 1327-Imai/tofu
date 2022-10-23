@@ -187,6 +187,7 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Singleton.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="ViewProjection.h" />
     <ClInclude Include="MathFunc.h" />

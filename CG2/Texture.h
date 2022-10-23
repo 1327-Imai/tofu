@@ -11,6 +11,7 @@
 #pragma comment(lib,"dxgi.lib")
 
 #include "WinApp.h"
+#include "DX12base.h"
 
 #include <DirectXTex.h>
 
@@ -18,7 +19,7 @@ using namespace Microsoft::WRL;
 using namespace DirectX;
 
 class Model;
-class DX12base;
+//class DX12base;
 
 class Texture {
 
@@ -31,8 +32,6 @@ public:
 	void Draw();
 
 	//アクセッサ
-	void SetDx12Base(DX12base* dx12base);
-
 	void SetModel(Model* model);
 
 	//メンバ変数
@@ -69,7 +68,7 @@ private:
 	const size_t kMaxSRVCount = 2056;
 
 	//DirectX基礎部分
-	DX12base* dx12base;
+	DX12base& dx12base =DX12base::GetInstance();
 
 	//モデル
 	Model* model;

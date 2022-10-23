@@ -5,6 +5,9 @@
 #include "WinApp.h"
 #include "ViewProjection.h"
 
+#include "Audio.h"
+#include <xaudio2.h>
+#pragma comment(lib,"xaudio2.lib")
 
 class GameScene {
 
@@ -29,11 +32,18 @@ private: // ÉÅÉìÉoïœêî
 	WinApp* winApp_ = nullptr;
 	DX12base* dx12base_ = nullptr;
 	Input* input_ = nullptr;
+	XMMATRIX matProjection_;
+	SoundManager soundManager_;
 
 	ViewProjection viewProjection_;
 	float angle = 0.0f;
 
 	GameObject3D* gameObject = nullptr;
 	GameObject3D* gameObject2 = nullptr;
+
+	//âπê∫ì«Ç›çûÇ›
+	SoundData soundData1 = soundManager_.SoundLoadWave("Resources/Alarm01.wav");
+
+	bool isPlayingBGM = false;
 
 };

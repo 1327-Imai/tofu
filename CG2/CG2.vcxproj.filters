@@ -104,6 +104,9 @@
     <ClInclude Include="GameScene.h">
       <Filter>Hedder</Filter>
     </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Hedder</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Hedder">

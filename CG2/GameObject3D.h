@@ -2,6 +2,7 @@
 #include "WorldTransform.h"
 #include "Model.h"
 #include "Texture.h"
+#include "DX12base.h"
 
 #include "MathFunc.h"
 #include "Vector2.h"
@@ -10,7 +11,7 @@
 
 
 //前方宣言
-class DX12base;
+//class DX12base;
 class ViewProjection;
 
 class GameObject3D {
@@ -27,7 +28,6 @@ public:
 	void Draw();
 
 	//アクセッサ
-	void SetDX12Base(DX12base* dx12base);
 	void SetViewProjection(ViewProjection* viewProjection);
 	void SetMatProjection(XMMATRIX* matProjection);
 
@@ -82,7 +82,7 @@ private:
 	XMMATRIX* matProjection;
 
 	//DirectX基礎部分
-	DX12base* dx12base;
+	DX12base& dx12base = DX12base::GetInstance();
 	//ビュープロジェクション
 	ViewProjection* viewProjection;
 

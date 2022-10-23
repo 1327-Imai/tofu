@@ -9,7 +9,7 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
-	delete dx12base_;
+	//delete dx12base_;
 	delete input_;
 
 	delete gameObject;
@@ -27,7 +27,7 @@ void GameScene::Initialize(DX12base* dx12base, Input* input, WinApp* winApp)
 	input_ = input;
 
 	//透視投影変換行列の計算
-	XMMATRIX matProjection = XMMatrixPerspectiveFovLH(
+	matProjection_ = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(45.0) ,
 		(float)winApp->window_width / winApp->window_height ,
 		0.1f , 1000.0f
@@ -35,23 +35,29 @@ void GameScene::Initialize(DX12base* dx12base, Input* input, WinApp* winApp)
 	
 	viewProjection_.Initialize();
 
-
 	gameObject = new GameObject3D;
-	gameObject->SetDX12Base(dx12base);
 	gameObject->PreLoadTexture(L"Resources/texture.jpg");
 	gameObject->Initialize();
 	gameObject->SetViewProjection(&viewProjection_);
-	gameObject->SetMatProjection(&matProjection);
+	gameObject->SetMatProjection(&matProjection_);
 
 	gameObject2 = new GameObject3D;
-	gameObject2->SetDX12Base(dx12base);
 	gameObject2->Initialize();
 	gameObject2->SetViewProjection(&viewProjection_);
-	gameObject2->SetMatProjection(&matProjection);
+	gameObject2->SetMatProjection(&matProjection_);
+
+	//XAudioエンジンのインスタンスを生成
+	soundManager_.Initialize();
 }
 
 void GameScene::Update()
 {
+	if (isPlayingBGM == false) {
+		//音声再生
+		soundManager_.SoundPlayWave(soundManager_.xAudio2.Get() , soundData1 , false , 0.01f);
+		isPlayingBGM = true;
+	}
+
 	//ビュー変換
 	//いずれかのキーを押していたら
 	if (input_->PushKey(DIK_D) || input_->PushKey(DIK_A)) {
