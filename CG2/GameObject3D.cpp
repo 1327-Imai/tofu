@@ -1,11 +1,5 @@
 #include "GameObject3D.h"
 
-//前方宣言の定義
-class DX12base {
-public:
-	ComPtr<ID3D12GraphicsCommandList> GetCmdList();
-	ComPtr<ID3D12Device> GetDevice();
-};
 class ViewProjection {
 public:
 	Matrix4 matView;
@@ -52,10 +46,10 @@ void GameObject3D::Update() {
 void GameObject3D::Draw() {
 
 	//頂点バッファ―ビューをセットするコマンド
-	dx12base->GetCmdList()->SetGraphicsRootConstantBufferView(0 , constBuffMaterial->GetGPUVirtualAddress());
+	dx12base.GetCmdList()->SetGraphicsRootConstantBufferView(0 , constBuffMaterial->GetGPUVirtualAddress());
 
 	//定数バッファビュー(CBV)の設定コマンド
-	dx12base->GetCmdList()->SetGraphicsRootConstantBufferView(2 , constBuffTransform->GetGPUVirtualAddress());
+	dx12base.GetCmdList()->SetGraphicsRootConstantBufferView(2 , constBuffTransform->GetGPUVirtualAddress());
 
 	textrue.Draw();
 
@@ -80,7 +74,7 @@ void GameObject3D::InitializeConstMapTransform() {
 	cbTransformResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//定数バッファの生成
-	result = dx12base->GetDevice()->CreateCommittedResource(
+	result = dx12base.GetDevice()->CreateCommittedResource(
 		&cbTransformHeapProp ,	//ヒープ設定
 		D3D12_HEAP_FLAG_NONE ,
 		&cbTransformResourceDesc ,	//リソース設定
@@ -115,7 +109,7 @@ void GameObject3D::InitializeConstMapMaterial() {
 	cbMaterialResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//定数バッファの生成
-	result = dx12base->GetDevice()->CreateCommittedResource(
+	result = dx12base.GetDevice()->CreateCommittedResource(
 		&cbMaterialHeapProp ,	//ヒープ設定
 		D3D12_HEAP_FLAG_NONE ,
 		&cbMaterialResourceDesc ,	//リソース設定
@@ -138,12 +132,6 @@ void GameObject3D::InitializeConstMapMaterial() {
 
 
 //アクセッサ
-void GameObject3D::SetDX12Base(DX12base* dx12base) {
-	this->dx12base = dx12base;
-	model.SetDx12Base(dx12base);
-	textrue.SetDx12Base(dx12base);
-}
-
 void GameObject3D::SetViewProjection(ViewProjection* viewProjection) {
 	this->viewProjection = viewProjection;
 }

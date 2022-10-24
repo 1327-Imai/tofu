@@ -9,6 +9,8 @@
 
 #include<wrl.h>
 
+#include "DX12base.h"
+
 #pragma comment(lib,"d3d12.lib")
 #pragma comment(lib,"dxgi.lib")
 #pragma comment(lib,"d3dcompiler")
@@ -18,7 +20,7 @@
 using namespace Microsoft::WRL;
 using namespace DirectX;
 
-class DX12base;
+//class DX12base;
 
 class Model{
 public:
@@ -32,8 +34,6 @@ public:
 
 public:
 	//アクセッサ
-	void SetDx12Base(DX12base* dx12base);
-
 	D3D12_RESOURCE_DESC GetResDesc();
 
 	D3D12_VERTEX_BUFFER_VIEW GetVbView();
@@ -53,7 +53,7 @@ private:
 	HRESULT result;
 
 	//dierectX12の基礎設定
-	DX12base* dx12base = nullptr;
+	DX12base& dx12base = DX12base::GetInstance();
 
 	//モデルのファイル形式
 	char fileType[5]={0};

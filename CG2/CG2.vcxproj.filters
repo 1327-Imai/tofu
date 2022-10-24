@@ -36,9 +36,6 @@
     <ClCompile Include="DX12base.cpp">
       <Filter>Srouce</Filter>
     </ClCompile>
-    <ClCompile Include="Audio.cpp">
-      <Filter>Srouce</Filter>
-    </ClCompile>
     <ClCompile Include="MathFunc.cpp">
       <Filter>Srouce\Math</Filter>
     </ClCompile>
@@ -53,6 +50,12 @@
     </ClCompile>
     <ClCompile Include="Vector4.cpp">
       <Filter>Srouce\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Srouce</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Srouce</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +100,12 @@
     </ClInclude>
     <ClInclude Include="Vector4.h">
       <Filter>Hedder\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Hedder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

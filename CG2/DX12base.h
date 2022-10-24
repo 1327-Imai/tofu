@@ -12,12 +12,16 @@
 
 #include "WinApp.h"
 
+#include "Singleton.h"
+
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-class DX12base {
-public:
+class DX12base :public Singleton<DX12base>{
 
+	friend Singleton<DX12base>;
+
+public:
 	//ƒƒ“ƒoŠÖ”
 	//‰Šú‰»ˆ—
 	void Initialize();
@@ -27,6 +31,9 @@ public:
 	void PostDraw();
 
 private:
+	DX12base() {};
+	~DX12base() {};
+
 	void CreateCmdList();
 
 	void SetSwapChain();
