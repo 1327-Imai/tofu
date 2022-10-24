@@ -1,30 +1,16 @@
 #include "GameScene.h"
 #include <cassert>
 
-void MoveObject3d(GameObject3D* object , BYTE key[256]);
-
-GameScene::GameScene()
-{
-}
-
-GameScene::~GameScene()
-{
-	//delete dx12base_;
-	delete input_;
-
-	delete gameObject;
-	delete gameObject2;
+GameScene::GameScene() {
 
 }
 
-void GameScene::Initialize(DX12base* dx12base, Input* input, WinApp* winApp)
-{
-	// nullptrチェック
-	assert(dx12base);
-	assert(input);
+GameScene::~GameScene() {
+	delete player;
+	delete map;
+}
 
-	dx12base_ = dx12base;
-	input_ = input;
+void GameScene::Initialize(WinApp* winApp) {
 
 	//透視投影変換行列の計算
 	matProjection_ = XMMatrixPerspectiveFovLH(
@@ -32,82 +18,37 @@ void GameScene::Initialize(DX12base* dx12base, Input* input, WinApp* winApp)
 		(float)winApp->window_width / winApp->window_height ,
 		0.1f , 1000.0f
 	);
-	
+
 	viewProjection_.Initialize();
+	viewProjection_.eye = {0 , 100 , -100};
 
-	gameObject = new GameObject3D;
-	gameObject->PreLoadTexture(L"Resources/texture.jpg");
-	gameObject->Initialize();
-	gameObject->SetViewProjection(&viewProjection_);
-	gameObject->SetMatProjection(&matProjection_);
-
-	gameObject2 = new GameObject3D;
-	gameObject2->Initialize();
-	gameObject2->SetViewProjection(&viewProjection_);
-	gameObject2->SetMatProjection(&matProjection_);
 
 	//XAudioエンジンのインスタンスを生成
 	soundManager_.Initialize();
+
+	map = new Map();
+	map->Initialize(&viewProjection_ , &matProjection_);
+
+	player = new Player();
+	player->Initialize(&viewProjection_ , &matProjection_);
+	player->SetMap(map);
 }
 
-void GameScene::Update()
-{
+void GameScene::Update() {
 	if (isPlayingBGM == false) {
 		//音声再生
-		soundManager_.SoundPlayWave(soundManager_.xAudio2.Get() , soundData1 , false , 0.01f);
+		//soundManager_.SoundPlayWave(soundManager_.xAudio2.Get() , soundData1 , false , 0.01f);
 		isPlayingBGM = true;
 	}
+	viewProjection_.UpdateView();
 
-	//ビュー変換
-	//いずれかのキーを押していたら
-	if (input_->PushKey(DIK_D) || input_->PushKey(DIK_A)) {
 
-		//押したキーに応じてangleを増減させる
-		if (input_->PushKey(DIK_D)) {
-			angle += XMConvertToRadians(1.0f);
-		}
-		if (input_->PushKey(DIK_A)) {
-			angle -= XMConvertToRadians(1.0f);
-		}
-
-		//angleラジアンだけY軸周りに回転。半径は - 100
-		viewProjection_.eye.x = -100 * sinf(angle);
-		viewProjection_.eye.z = -100 * cosf(angle);
-
-		//ビュー変換行列を作り直す
-		viewProjection_.UpdateView();
-
-	}
-
-	MoveObject3d(gameObject , input_->key);
-
-	gameObject->Update();
-	gameObject2->Update();
-
+	map->Update();
+	player->Update();
 }
 
-void GameScene::Draw()
-{
-	gameObject->Draw();
-	gameObject2->Draw();
+void GameScene::Draw() {
 
-}
-
-
-void MoveObject3d(GameObject3D* object , BYTE key[256]) {
-	if (key[DIK_UP] || key[DIK_DOWN] || key[DIK_RIGHT] || key[DIK_LEFT]) {
-
-		if (key[DIK_UP]) {
-			object->worldTransform.translation.y += 1.0f;
-		}
-		if (key[DIK_DOWN]) {
-			object->worldTransform.translation.y -= 1.0f;
-		}
-		if (key[DIK_RIGHT]) {
-			object->worldTransform.translation.x += 1.0f;
-		}
-		if (key[DIK_LEFT]) {
-			object->worldTransform.translation.x -= 1.0f;
-		}
-	}
+	map->Draw();
+	player->Draw();
 }

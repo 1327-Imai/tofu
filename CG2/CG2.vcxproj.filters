@@ -9,31 +9,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WorldTransform.cpp">
-      <Filter>Srouce</Filter>
-    </ClCompile>
-    <ClCompile Include="WinApp.cpp">
-      <Filter>Srouce</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewProjection.cpp">
-      <Filter>Srouce</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Srouce</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Srouce</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Srouce</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Srouce</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject3D.cpp">
-      <Filter>Srouce</Filter>
-    </ClCompile>
-    <ClCompile Include="DX12base.cpp">
       <Filter>Srouce</Filter>
     </ClCompile>
     <ClCompile Include="MathFunc.cpp">
@@ -51,41 +27,47 @@
     <ClCompile Include="Vector4.cpp">
       <Filter>Srouce\Math</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene.cpp">
+    <ClCompile Include="Player.cpp">
       <Filter>Srouce</Filter>
     </ClCompile>
+    <ClCompile Include="WinApp.cpp">
+      <Filter>Srouce\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="DX12base.cpp">
+      <Filter>Srouce\Base</Filter>
+    </ClCompile>
     <ClCompile Include="Audio.cpp">
+      <Filter>Srouce\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject3D.cpp">
+      <Filter>Srouce\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Srouce\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Srouce\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewProjection.cpp">
+      <Filter>Srouce\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldTransform.cpp">
+      <Filter>Srouce\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Srouce\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Srouce\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
       <Filter>Srouce</Filter>
+    </ClCompile>
+    <ClCompile Include="FPS.cpp">
+      <Filter>Srouce\FPS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Audio.h">
-      <Filter>Hedder</Filter>
-    </ClInclude>
-    <ClInclude Include="DX12base.h">
-      <Filter>Hedder</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject3D.h">
-      <Filter>Hedder</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Hedder</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Hedder</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Hedder</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewProjection.h">
-      <Filter>Hedder</Filter>
-    </ClInclude>
-    <ClInclude Include="WinApp.h">
-      <Filter>Hedder</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldTransform.h">
-      <Filter>Hedder</Filter>
-    </ClInclude>
     <ClInclude Include="MathFunc.h">
       <Filter>Hedder\Math</Filter>
     </ClInclude>
@@ -101,11 +83,50 @@
     <ClInclude Include="Vector4.h">
       <Filter>Hedder\Math</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
+    <ClInclude Include="Player.h">
       <Filter>Hedder</Filter>
     </ClInclude>
+    <ClInclude Include="DX12base.h">
+      <Filter>Hedder\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="WinApp.h">
+      <Filter>Hedder\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Hedder\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Hedder\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Hedder\Input</Filter>
+    </ClInclude>
     <ClInclude Include="Singleton.h">
+      <Filter>Hedder\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject3D.h">
+      <Filter>Hedder\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Hedder\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Hedder\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldTransform.h">
+      <Filter>Hedder\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewProjection.h">
+      <Filter>Hedder\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
       <Filter>Hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorException.h">
+      <Filter>Hedder\FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="FPS.h">
+      <Filter>Hedder\FPS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +144,42 @@
     </Filter>
     <Filter Include="Srouce\Math">
       <UniqueIdentifier>{dc5fa03c-e360-4828-8a43-b24ffb8d25c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hedder\Base">
+      <UniqueIdentifier>{0eb4d8cd-d86a-4dcf-887c-c5532d85db98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hedder\Audio">
+      <UniqueIdentifier>{0fcee3aa-1730-4efc-91dd-a72ea90f3d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hedder\Scene">
+      <UniqueIdentifier>{1f4268a9-5c94-4054-9986-735655dd3558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hedder\Input">
+      <UniqueIdentifier>{a98df30e-a46b-495d-b7d1-4da30fdaeead}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hedder\3d">
+      <UniqueIdentifier>{6da25f1d-38d6-45fb-90ae-d971e40b93e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Srouce\Base">
+      <UniqueIdentifier>{8484bcd4-5a54-4905-b2e1-237942e4c3af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Srouce\Audio">
+      <UniqueIdentifier>{137110f3-3d5b-44db-9257-08bb6b806848}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Srouce\3d">
+      <UniqueIdentifier>{dfca1537-e1a9-4d9e-a39e-5c1f3a8ec34a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Srouce\Scene">
+      <UniqueIdentifier>{2dfe83d7-4ec8-4727-ad07-eac92d3ced33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Srouce\Input">
+      <UniqueIdentifier>{49b90a1c-9e64-4e3e-983a-8d56e0459c0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hedder\FPS">
+      <UniqueIdentifier>{af4c2a5a-93df-44d9-a23f-62f72bd985ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Srouce\FPS">
+      <UniqueIdentifier>{8ee8761e-c1bd-4e6b-b10b-e72239fe8b5e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

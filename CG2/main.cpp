@@ -3,6 +3,7 @@
 #include "WinApp.h"
 #include "input.h"
 #include "GameScene.h"
+#include "FPS.h"
 
 WinApp winApp_;
 using namespace DirectX;
@@ -24,8 +25,6 @@ const double PI = 3.141592;
 //ウィンドウプロシーシャ
 LRESULT WindowProc(HWND hwnd , UINT msg , WPARAM wparam , LPARAM lparam);
 
-void MoveObject3d(GameObject3D* object , BYTE key[256]);
-
 #pragma endregion//関数のプロトタイプ宣言
 
 //main関数
@@ -34,7 +33,9 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	//WindowsAPI初期化処理
 	winApp_.Initialize();
 
-	Input* input_ = new Input;
+	FPS* fps = new FPS;
+
+	Input& input_ = Input::GetInstance();
 	GameScene* gameScene = nullptr;
 
 #pragma endregion//ウィンドウの生成
@@ -49,14 +50,14 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 #pragma region// キーボードデバイスの生成
 	// DirectInputの初期化
-	input_->DirectInputInit(winApp_);
+	input_.DirectInputInit(winApp_);
 
-	input_->DirectInputCreate(winApp_);
+	input_.DirectInputCreate(winApp_);
 #pragma endregion
 
 	// ゲームシーンの初期化
 	gameScene = new GameScene();
-	gameScene->Initialize(&dx12base, input_,&winApp_);
+	gameScene->Initialize(&winApp_);
 
 
 #pragma region//描画初期化処理
@@ -311,8 +312,10 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 #pragma region//DirectX毎フレーム処理
 
+		fps->FpsControlBegin();
+
 		// キーボード情報の取得開始
-		input_->Update();
+		input_.Update();
 
 #pragma region//更新処理
 
@@ -343,7 +346,6 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	}
 #pragma endregion//ゲームループ
 
-
 	//ID3D12DebugDevice* debugInterface;
 
 	//if (SUCCEEDED(device.Get()->QueryInterface(&debugInterface))) {
@@ -352,6 +354,8 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	//}
 
 	delete gameScene;
+
+	fps->FpsControlEnd();
 
 	//ウィンドウクラス登録解除
 	UnregisterClass(winApp_.w.lpszClassName , winApp_.w.hInstance);

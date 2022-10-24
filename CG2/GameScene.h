@@ -9,6 +9,9 @@
 #include <xaudio2.h>
 #pragma comment(lib,"xaudio2.lib")
 
+#include "Player.h"
+#include "Map.h"
+
 class GameScene {
 
 public: // メンバ関数
@@ -20,7 +23,7 @@ public: // メンバ関数
 	~GameScene();
 
 	//初期化
-	void Initialize(DX12base* dx12base , Input* input , WinApp* winApp);
+	void Initialize(WinApp* winApp);
 
 	//毎フレーム処理
 	void Update();
@@ -30,20 +33,20 @@ public: // メンバ関数
 
 private: // メンバ変数
 	WinApp* winApp_ = nullptr;
-	DX12base* dx12base_ = nullptr;
-	Input* input_ = nullptr;
-	XMMATRIX matProjection_;
+	DX12base& dx12base_ = DX12base::GetInstance();
+	Input& input_ = Input::GetInstance();
+	XMMATRIX matProjection_ = {};
 	SoundManager soundManager_;
 
 	ViewProjection viewProjection_;
-	float angle = 0.0f;
-
-	GameObject3D* gameObject = nullptr;
-	GameObject3D* gameObject2 = nullptr;
 
 	//音声読み込み
 	SoundData soundData1 = soundManager_.SoundLoadWave("Resources/Alarm01.wav");
 
 	bool isPlayingBGM = false;
+
+	Player* player = nullptr;
+
+	Map* map = nullptr;
 
 };
