@@ -6,12 +6,13 @@
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
-class Input
-{
-public:
-	Input();
-	~Input();
+#include "Singleton.h"
 
+class Input :public Singleton<Input>
+{
+	friend Singleton<Input>;
+
+public:
 	IDirectInputDevice8* keyboard;
 	IDirectInput8* directInput;
 
@@ -26,5 +27,9 @@ public:
 	void DirectInputCreate(WinApp winApp_);
 
 	void Update();
+
+private:
+	Input();
+	~Input();
 
 };

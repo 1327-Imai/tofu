@@ -9,51 +9,54 @@
 #include <xaudio2.h>
 #pragma comment(lib,"xaudio2.lib")
 
+#include "Player.h"
+#include "Map.h"
+
 class GameScene {
 
-public: // ƒƒ“ƒoŠÖ”
+public: // ãƒ¡ãƒ³ãƒé–¢æ•°
 
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	GameScene();
 
-	/// ƒfƒXƒgƒ‰ƒNƒ^
+	/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~GameScene();
 
-	//‰Šú‰»
-	void Initialize(DX12base* dx12base , Input* input , WinApp* winApp);
+	//åˆæœŸåŒ–
+	void Initialize(WinApp* winApp);
 
-	//–ˆƒtƒŒ[ƒ€ˆ—
+	//æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	void Update();
 
-	//•`‰æˆ—
+	//æç”»å‡¦ç†
 	void Draw();
 
-private: // ƒƒ“ƒo•Ï”
+private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
 	WinApp* winApp_ = nullptr;
-	DX12base* dx12base_ = nullptr;
-	Input* input_ = nullptr;
-	XMMATRIX matProjection_;
+	DX12base& dx12base_ = DX12base::GetInstance();
+	Input& input_ = Input::GetInstance();
+	XMMATRIX matProjection_ = {};
 	SoundManager soundManager_;
 
 	ViewProjection viewProjection_;
-	float angle = 0.0f;
 
-	GameObject3D* gameObject = nullptr;
-	GameObject3D* gameObject2 = nullptr;
-
-	//‰¹º“Ç‚İ‚İ
+	//éŸ³å£°èª­ã¿è¾¼ã¿
 	SoundData soundData1 = soundManager_.SoundLoadWave("Resources/Alarm01.wav");
 
 	bool isPlayingBGM = false;
 
-	//ƒV[ƒ“ŠÇ—
+	Player* player = nullptr;
+
+	Map* map = nullptr;
+  
+	//ã‚·ãƒ¼ãƒ³ç®¡ç†
 	enum class Scene
 	{
-		Title,//ƒ^ƒCƒgƒ‹
-		Stage,//ƒXƒe[ƒW
-		Pose,//ƒ|[ƒY
-		Clear,//ƒNƒŠƒA
-		Over,//ƒQ[ƒ€ƒI[ƒo[
+		Title,//ã‚¿ã‚¤ãƒˆãƒ«
+		Stage,//ã‚¹ãƒ†ãƒ¼ã‚¸
+		Pose,//ãƒãƒ¼ã‚º
+		Clear,//ã‚¯ãƒªã‚¢
+		Over,//ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼
 	};
 
 	Scene scene_ = Scene::Title;

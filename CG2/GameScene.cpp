@@ -1,90 +1,48 @@
 #include "GameScene.h"
 #include <cassert>
 
-void MoveObject3d(GameObject3D* object , BYTE key[256]);
-
-GameScene::GameScene()
-{
-}
-
-GameScene::~GameScene()
-{
-	//delete dx12base_;
-	delete input_;
-
-	delete gameObject;
-	delete gameObject2;
+GameScene::GameScene() {
 
 }
 
-void GameScene::Initialize(DX12base* dx12base, Input* input, WinApp* winApp)
-{
-	// nullptrƒ`ƒFƒbƒN
-	assert(dx12base);
-	assert(input);
+GameScene::~GameScene() {
+	delete player;
+	delete map;
+}
 
-	dx12base_ = dx12base;
-	input_ = input;
+void GameScene::Initialize(WinApp* winApp) {
 
-	//“§Ž‹“Š‰e•ÏŠ·s—ñ‚ÌŒvŽZ
+	//é€è¦–æŠ•å½±å¤‰æ›è¡Œåˆ—ã®è¨ˆç®—
 	matProjection_ = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(45.0) ,
 		(float)winApp->window_width / winApp->window_height ,
 		0.1f , 1000.0f
 	);
-	
+
 	viewProjection_.Initialize();
+	viewProjection_.eye = {0 , 100 , -100};
 
-	gameObject = new GameObject3D;
-	gameObject->PreLoadTexture(L"Resources/texture.jpg");
-	gameObject->Initialize();
-	gameObject->SetViewProjection(&viewProjection_);
-	gameObject->SetMatProjection(&matProjection_);
 
-	gameObject2 = new GameObject3D;
-	gameObject2->Initialize();
-	gameObject2->SetViewProjection(&viewProjection_);
-	gameObject2->SetMatProjection(&matProjection_);
-
-	//XAudioƒGƒ“ƒWƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ð¶¬
+	//XAudioã‚¨ãƒ³ã‚¸ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
 	soundManager_.Initialize();
+
+	map = new Map();
+	map->Initialize(&viewProjection_ , &matProjection_);
+
+	player = new Player();
+	player->Initialize(&viewProjection_ , &matProjection_);
+	player->SetMap(map);
 }
 
-void GameScene::Update()
-{
+void GameScene::Update() {
 	if (isPlayingBGM == false) {
-		//‰¹ºÄ¶
-		soundManager_.SoundPlayWave(soundManager_.xAudio2.Get() , soundData1 , false , 0.01f);
+		//éŸ³å£°å†ç”Ÿ
+		//soundManager_.SoundPlayWave(soundManager_.xAudio2.Get() , soundData1 , false , 0.01f);
 		isPlayingBGM = true;
 	}
-
-	//ƒrƒ…[•ÏŠ·
-	//‚¢‚¸‚ê‚©‚ÌƒL[‚ð‰Ÿ‚µ‚Ä‚¢‚½‚ç
-	if (input_->PushKey(DIK_D) || input_->PushKey(DIK_A)) {
-
-		//‰Ÿ‚µ‚½ƒL[‚É‰ž‚¶‚Äangle‚ð‘Œ¸‚³‚¹‚é
-		if (input_->PushKey(DIK_D)) {
-			angle += XMConvertToRadians(1.0f);
-		}
-		if (input_->PushKey(DIK_A)) {
-			angle -= XMConvertToRadians(1.0f);
-		}
-
-		//angleƒ‰ƒWƒAƒ“‚¾‚¯YŽ²Žü‚è‚É‰ñ“]B”¼Œa‚Í - 100
-		viewProjection_.eye.x = -100 * sinf(angle);
-		viewProjection_.eye.z = -100 * cosf(angle);
-
-		//ƒrƒ…[•ÏŠ·s—ñ‚ðì‚è’¼‚·
-		viewProjection_.UpdateView();
-
-	}
-
-	MoveObject3d(gameObject , input_->key);
-
-	gameObject->Update();
-	gameObject2->Update();
-
-	//ƒV[ƒ“ŠÇ—
+	viewProjection_.UpdateView();
+  
+	//ã‚·ãƒ¼ãƒ³ç®¡ç†
 	switch (scene_)
 	{
 	case GameScene::Scene::Title:
@@ -93,6 +51,8 @@ void GameScene::Update()
 		break;
 	case GameScene::Scene::Stage:
 
+      	map->Update();
+	      player->Update();
 
 		break;
 	case GameScene::Scene::Pose:
@@ -117,8 +77,6 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	gameObject->Draw();
-	gameObject2->Draw();
 	switch (scene_)
 	{
 	case GameScene::Scene::Title:
@@ -127,6 +85,8 @@ void GameScene::Draw()
 		break;
 	case GameScene::Scene::Stage:
 
+      	map->Draw();
+	      player->Draw();
 
 		break;
 	case GameScene::Scene::Pose:
@@ -146,23 +106,4 @@ void GameScene::Draw()
 		break;
 	}
 
-}
-
-
-void MoveObject3d(GameObject3D* object , BYTE key[256]) {
-	if (key[DIK_UP] || key[DIK_DOWN] || key[DIK_RIGHT] || key[DIK_LEFT]) {
-
-		if (key[DIK_UP]) {
-			object->worldTransform.translation.y += 1.0f;
-		}
-		if (key[DIK_DOWN]) {
-			object->worldTransform.translation.y -= 1.0f;
-		}
-		if (key[DIK_RIGHT]) {
-			object->worldTransform.translation.x += 1.0f;
-		}
-		if (key[DIK_LEFT]) {
-			object->worldTransform.translation.x -= 1.0f;
-		}
-	}
 }
