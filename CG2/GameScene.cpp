@@ -84,12 +84,67 @@ void GameScene::Update()
 	gameObject->Update();
 	gameObject2->Update();
 
+	//ƒV[ƒ“ŠÇ—
+	switch (scene_)
+	{
+	case GameScene::Scene::Title:
+
+
+		break;
+	case GameScene::Scene::Stage:
+
+
+		break;
+	case GameScene::Scene::Pose:
+
+
+		break;
+	case GameScene::Scene::Clear:
+
+
+		break;
+	case GameScene::Scene::Over:
+
+
+		break;
+
+	default:
+		break;
+	}
+
+
 }
 
 void GameScene::Draw()
 {
 	gameObject->Draw();
 	gameObject2->Draw();
+	switch (scene_)
+	{
+	case GameScene::Scene::Title:
+
+
+		break;
+	case GameScene::Scene::Stage:
+
+
+		break;
+	case GameScene::Scene::Pose:
+
+
+		break;
+	case GameScene::Scene::Clear:
+
+
+		break;
+	case GameScene::Scene::Over:
+
+
+		break;
+
+	default:
+		break;
+	}
 
 }
 

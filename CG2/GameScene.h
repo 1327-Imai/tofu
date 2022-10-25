@@ -46,4 +46,16 @@ private: // メンバ変数
 
 	bool isPlayingBGM = false;
 
+	//シーン管理
+	enum class Scene
+	{
+		Title,//タイトル
+		Stage,//ステージ
+		Pose,//ポーズ
+		Clear,//クリア
+		Over,//ゲームオーバー
+	};
+
+	Scene scene_ = Scene::Title;
+
 };
