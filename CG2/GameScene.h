@@ -14,24 +14,24 @@
 
 class GameScene {
 
-public: // ƒƒ“ƒoŠÖ”
+public: // ãƒ¡ãƒ³ãƒé–¢æ•°
 
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	GameScene();
 
-	/// ƒfƒXƒgƒ‰ƒNƒ^
+	/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~GameScene();
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize(WinApp* winApp);
 
-	//–ˆƒtƒŒ[ƒ€ˆ—
+	//æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	void Update();
 
-	//•`‰æˆ—
+	//æç”»å‡¦ç†
 	void Draw();
 
-private: // ƒƒ“ƒo•Ï”
+private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
 	WinApp* winApp_ = nullptr;
 	DX12base& dx12base_ = DX12base::GetInstance();
 	Input& input_ = Input::GetInstance();
@@ -40,7 +40,7 @@ private: // ƒƒ“ƒo•Ï”
 
 	ViewProjection viewProjection_;
 
-	//‰¹º“Ç‚İ‚İ
+	//éŸ³å£°èª­ã¿è¾¼ã¿
 	SoundData soundData1 = soundManager_.SoundLoadWave("Resources/Alarm01.wav");
 
 	bool isPlayingBGM = false;
@@ -48,5 +48,17 @@ private: // ƒƒ“ƒo•Ï”
 	Player* player = nullptr;
 
 	Map* map = nullptr;
+  
+	//ã‚·ãƒ¼ãƒ³ç®¡ç†
+	enum class Scene
+	{
+		Title,//ã‚¿ã‚¤ãƒˆãƒ«
+		Stage,//ã‚¹ãƒ†ãƒ¼ã‚¸
+		Pose,//ãƒãƒ¼ã‚º
+		Clear,//ã‚¯ãƒªã‚¢
+		Over,//ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼
+	};
+
+	Scene scene_ = Scene::Title;
 
 };

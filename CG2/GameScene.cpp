@@ -12,7 +12,7 @@ GameScene::~GameScene() {
 
 void GameScene::Initialize(WinApp* winApp) {
 
-	//“§Ž‹“Š‰e•ÏŠ·s—ñ‚ÌŒvŽZ
+	//é€è¦–æŠ•å½±å¤‰æ›è¡Œåˆ—ã®è¨ˆç®—
 	matProjection_ = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(45.0) ,
 		(float)winApp->window_width / winApp->window_height ,
@@ -23,7 +23,7 @@ void GameScene::Initialize(WinApp* winApp) {
 	viewProjection_.eye = {0 , 100 , -100};
 
 
-	//XAudioƒGƒ“ƒWƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ð¶¬
+	//XAudioã‚¨ãƒ³ã‚¸ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
 	soundManager_.Initialize();
 
 	map = new Map();
@@ -36,19 +36,74 @@ void GameScene::Initialize(WinApp* winApp) {
 
 void GameScene::Update() {
 	if (isPlayingBGM == false) {
-		//‰¹ºÄ¶
+		//éŸ³å£°å†ç”Ÿ
 		//soundManager_.SoundPlayWave(soundManager_.xAudio2.Get() , soundData1 , false , 0.01f);
 		isPlayingBGM = true;
 	}
 	viewProjection_.UpdateView();
+  
+	//ã‚·ãƒ¼ãƒ³ç®¡ç†
+	switch (scene_)
+	{
+	case GameScene::Scene::Title:
 
 
-	map->Update();
-	player->Update();
+		break;
+	case GameScene::Scene::Stage:
+
+      	map->Update();
+	      player->Update();
+
+		break;
+	case GameScene::Scene::Pose:
+
+
+		break;
+	case GameScene::Scene::Clear:
+
+
+		break;
+	case GameScene::Scene::Over:
+
+
+		break;
+
+	default:
+		break;
+	}
+
+
 }
 
-void GameScene::Draw() {
+void GameScene::Draw()
+{
+	switch (scene_)
+	{
+	case GameScene::Scene::Title:
 
-	map->Draw();
-	player->Draw();
+
+		break;
+	case GameScene::Scene::Stage:
+
+      	map->Draw();
+	      player->Draw();
+
+		break;
+	case GameScene::Scene::Pose:
+
+
+		break;
+	case GameScene::Scene::Clear:
+
+
+		break;
+	case GameScene::Scene::Over:
+
+
+		break;
+
+	default:
+		break;
+	}
+
 }
