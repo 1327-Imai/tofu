@@ -2,6 +2,7 @@
 #include "GameObject3D.h"
 #include "Input.h"
 #include "MathFunc.h"
+#include <cmath>
 
 class Map;
 
@@ -18,6 +19,8 @@ public:
 
 	void Draw();
 
+	void Reset();
+
 	//アクセッサ
 	void SetMap(Map* map);
 
@@ -25,7 +28,7 @@ public:
 private:
 	void Rotate();
 	void Move();
-	void Colision();
+	void Collision();
 
 	//メンバ変数
 private:
@@ -39,11 +42,11 @@ private:
 
 	Vector3 velocity = {};
 
-	const float accelaration = 0.005f;
+	const float accelaration = 0.0025f;
 
 	float moveSpeed = 0;
 
-	const float maxSpeed = 1.0;
+	const float maxSpeed = 0.5;
 
 	Vector3 target;
 

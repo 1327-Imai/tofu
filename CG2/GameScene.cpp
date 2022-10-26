@@ -32,6 +32,8 @@ void GameScene::Initialize(WinApp* winApp) {
 	player = new Player();
 	player->Initialize(&viewProjection_ , &matProjection_);
 	player->SetMap(map);
+
+	stage = 1;
 }
 
 void GameScene::Update() {
@@ -41,69 +43,109 @@ void GameScene::Update() {
 		isPlayingBGM = true;
 	}
 	viewProjection_.UpdateView();
-  
+
 	//シーン管理
-	switch (scene_)
-	{
+	switch (scene_) {
 	case GameScene::Scene::Title:
 
+	if (input_.PushKey(DIK_SPACE)) {
+		scene_ = GameScene::Scene::Stage;
+	}
 
-		break;
+	break;
 	case GameScene::Scene::Stage:
 
-      	map->Update();
-	      player->Update();
+	map->Update();
+	player->Update();
 
-		break;
+	if (input_.TriggerKey(DIK_1)) {
+		stage = 1;
+		Reset();
+	}
+	else if (input_.TriggerKey(DIK_2)) {
+		stage = 2;
+		Reset();
+	}
+	else if (input_.TriggerKey(DIK_3)) {
+		stage = 3;
+		Reset();
+	}
+	else if (input_.TriggerKey(DIK_4)) {
+		stage = 4;
+		Reset();
+	}
+	else if (input_.TriggerKey(DIK_5)) {
+		stage = 5;
+		Reset();
+	}
+	else if (input_.TriggerKey(DIK_6)) {
+		stage = 6;
+		Reset();
+	}
+	else if (input_.TriggerKey(DIK_7)) {
+		stage = 7;
+		Reset();
+	}
+
+	if (input_.TriggerKey(DIK_R)) {
+		Reset();
+	}
+
+	break;
 	case GameScene::Scene::Pose:
 
 
-		break;
+	break;
 	case GameScene::Scene::Clear:
 
 
-		break;
+	break;
 	case GameScene::Scene::Over:
 
 
-		break;
+	break;
 
 	default:
-		break;
+	break;
 	}
 
 
 }
 
-void GameScene::Draw()
-{
-	switch (scene_)
-	{
+void GameScene::Draw() {
+	switch (scene_) {
 	case GameScene::Scene::Title:
 
 
-		break;
+	break;
 	case GameScene::Scene::Stage:
 
-      	map->Draw();
-	      player->Draw();
+	map->Draw();
+	player->Draw();
 
-		break;
+	break;
 	case GameScene::Scene::Pose:
 
 
-		break;
+	break;
 	case GameScene::Scene::Clear:
 
 
-		break;
+	break;
 	case GameScene::Scene::Over:
 
 
-		break;
+	break;
 
 	default:
-		break;
+	break;
 	}
+
+}
+
+void GameScene::Reset() {
+
+	player->Reset();
+	map->LoadMap(stage,&viewProjection_,&matProjection_);
 
 }

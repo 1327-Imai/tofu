@@ -31,6 +31,8 @@ public: // メンバ関数
 	//描画処理
 	void Draw();
 
+	void Reset();
+
 private: // メンバ変数
 	WinApp* winApp_ = nullptr;
 	DX12base& dx12base_ = DX12base::GetInstance();
@@ -60,5 +62,7 @@ private: // メンバ変数
 	};
 
 	Scene scene_ = Scene::Title;
+
+	int stage = 0;
 
 };
