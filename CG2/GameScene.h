@@ -8,6 +8,7 @@
 #include "Audio.h"
 #include <xaudio2.h>
 #pragma comment(lib,"xaudio2.lib")
+#include "Sprite.h"
 
 #include "Player.h"
 #include "Map.h"
@@ -68,6 +69,6 @@ private: // メンバ変数
 
 	int stage = 0;
 
-
+	Sprite* sprite_ = nullptr;
 
 };
