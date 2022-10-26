@@ -2,9 +2,9 @@
 #include "GameObject3D.h"
 #include "Input.h"
 #include "MathFunc.h"
-#include <cmath>
 
 class Map;
+class Goal;
 
 class Player {
 public:
@@ -23,6 +23,10 @@ public:
 
 	//アクセッサ
 	void SetMap(Map* map);
+	void SetGoal(Goal* goal);
+
+	int GetIsGoal();
+	void SetIsGoal(int flag);
 
 	//メンバ関数
 private:
@@ -54,7 +58,9 @@ private:
 
 	int isHitMap = false;
 
-	Map* map = nullptr;
+	int isGoal = false;
 
+	Map* map = nullptr;
+	Goal* goal = nullptr;
 };
 
