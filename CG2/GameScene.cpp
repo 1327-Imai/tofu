@@ -9,6 +9,7 @@ GameScene::~GameScene() {
 	delete player;
 	delete map;
 	delete goal;
+	delete sprite_;
 }
 
 void GameScene::Initialize(WinApp* winApp) {
@@ -42,6 +43,10 @@ void GameScene::Initialize(WinApp* winApp) {
 	particle->Initialize(&viewProjection_ , &matProjection_ , player);
 
 	stage = 1;
+
+	Sprite::LoadTexture(1, L"Resources/reimu.png");
+
+	sprite_ = Sprite::Create(1, { 10,10 });
 }
 
 void GameScene::Update() {
@@ -163,7 +168,7 @@ void GameScene::Draw() {
 	default:
 	break;
 	}
-
+	sprite_->Draw();
 }
 
 void GameScene::Reset() {
