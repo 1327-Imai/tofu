@@ -30,7 +30,7 @@ void Player::Update() {
 
 	Rotate();
 	Move();
-	Colision();
+	Collision();
 
 	if (isDead == false) {
 		gameObject->Update();
@@ -105,7 +105,7 @@ void Player::Move() {
 
 }
 
-void Player::Colision() {
+void Player::Collision() {
 	//マップチップ
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
@@ -141,28 +141,6 @@ void Player::Colision() {
 			}
 		}
 	}
-
-	//for (int i = 0; i < map->GetObjectCount(); i++) {
-	//	if (map->GetWorldTransform(i).translation.x - gameObject->worldTransform.translation.x < 2 &&
-	//		-2 < map->GetWorldTransform(i).translation.x - gameObject->worldTransform.translation.x) {
-	//		if (map->GetWorldTransform(i).translation.z - gameObject->worldTransform.translation.z < 2 &&
-	//			-2 < map->GetWorldTransform(i).translation.z - gameObject->worldTransform.translation.z) {
-
-	//			if (0.4 < moveSpeed) {
-	//				isDead = true;
-	//			}
-	//			else {
-	//				if (isHitMap == false) {
-	//					isHitMap = true;					
-	//				}
-	//				else {
-	//					isHitMap = false;
-	//				}
-	//				gameObject->worldTransform.translation -= velocity;
-	//			}
-	//		}
-	//	}
-	//}
 }
 
 //アクセッサ

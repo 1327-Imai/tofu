@@ -28,7 +28,7 @@ public:
 private:
 	void Rotate();
 	void Move();
-	void Colision();
+	void Collision();
 
 	//ƒƒ“ƒo•Ï”
 private:
