@@ -1,4 +1,3 @@
-//#include <random>
 #include "DX12base.h"
 #include "WinApp.h"
 #include "input.h"
@@ -8,18 +7,6 @@
 WinApp winApp_;
 using namespace DirectX;
 using namespace Microsoft::WRL;
-
-const double PI = 3.141592;
-
-////乱数シード生成器
-//std::random_device seed_gen;
-////メルセンヌ・ツイスターの乱数エンジン
-//std::mt19937_64 engine(seed_gen());
-////乱数範囲の指定
-//std::uniform_real_distribution<float> distPosX(-100.0 , 100.0);
-//std::uniform_real_distribution<float> distPosY(-50.0 , 50.0);
-//std::uniform_real_distribution<float> distPosZ(30.0 , 60.0);
-//std::uniform_real_distribution<float> distRot(0 , XMConvertToRadians(360.0f));
 
 #pragma region//関数のプロトタイプ宣言
 //ウィンドウプロシーシャ
@@ -34,6 +21,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	winApp_.Initialize();
 
 	FPS* fps = new FPS;
+	fps->SetFrameRate(60);
 
 	Input& input_ = Input::GetInstance();
 	GameScene* gameScene = nullptr;
@@ -55,7 +43,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	input_.DirectInputCreate(winApp_);
 #pragma endregion
 
-	Sprite::StaticInitialize(dx12base.GetDevice(), winApp_.window_width, winApp_.window_height);
+	Sprite::StaticInitialize(dx12base.GetDevice() , winApp_.window_width , winApp_.window_height);
 
 	// ゲームシーンの初期化
 	gameScene = new GameScene();
@@ -338,10 +326,8 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 		//プリミティブ形状の設定コマンド
 		dx12base.GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		Sprite::PreDraw(dx12base.GetCmdList().Get());
 		gameScene->Draw();
 
-		Sprite::PostDraw();
 #pragma endregion
 
 		//描画後処理
@@ -349,6 +335,7 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 #pragma endregion//DirectX毎フレーム処理
 
+		fps->FpsControlEnd();
 	}
 #pragma endregion//ゲームループ
 
@@ -361,7 +348,6 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 
 	delete gameScene;
 
-	fps->FpsControlEnd();
 
 	//ウィンドウクラス登録解除
 	UnregisterClass(winApp_.w.lpszClassName , winApp_.w.hInstance);

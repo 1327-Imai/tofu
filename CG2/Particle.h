@@ -5,6 +5,10 @@
 class Particle {
 public:
 
+	Particle();
+
+	~Particle();
+
 	void Initialize(ViewProjection* viewProjection , XMMATRIX* matProjection,Player* player);
 
 	void Update();
@@ -12,6 +16,8 @@ public:
 	void Draw();
 
 	void Reset();
+
+	int GetIsDead();
 
 private:
 

@@ -9,7 +9,23 @@ GameScene::~GameScene() {
 	delete player;
 	delete map;
 	delete goal;
-	delete sprite_;
+	delete particle;
+	delete title_;
+	delete clear_;
+	delete gameOver_;
+	delete spaceToContinue_;
+	delete spaceToReturnTitle_;
+	delete num0_;
+	delete num1_;
+	delete num2_;
+	delete num3_;
+	delete num4_;
+	delete num5_;
+	delete num6_;
+	delete num7_;
+	delete num8_;
+	delete num9_;
+	delete num10_;
 }
 
 void GameScene::Initialize(WinApp* winApp) {
@@ -32,7 +48,7 @@ void GameScene::Initialize(WinApp* winApp) {
 	map->Initialize(&viewProjection_ , &matProjection_);
 
 	goal = new Goal;
-	goal->Initialize(&viewProjection_,&matProjection_);
+	goal->Initialize(&viewProjection_ , &matProjection_);
 
 	player = new Player();
 	player->Initialize(&viewProjection_ , &matProjection_);
@@ -44,9 +60,39 @@ void GameScene::Initialize(WinApp* winApp) {
 
 	stage = 1;
 
-	Sprite::LoadTexture(1, L"Resources/reimu.png");
+	Sprite::LoadTexture(1 , L"Resources/title.png");
+	Sprite::LoadTexture(2 , L"Resources/GameClear.png");
+	Sprite::LoadTexture(3 , L"Resources/GameOver.png");
+	Sprite::LoadTexture(4 , L"Resources/Space_to_continue.png");
+	Sprite::LoadTexture(5 , L"Resources/Space_to_return_title.png");
+	Sprite::LoadTexture(6 , L"Resources/0.png");
+	Sprite::LoadTexture(7 , L"Resources/1.png");
+	Sprite::LoadTexture(8 , L"Resources/2.png");
+	Sprite::LoadTexture(9 , L"Resources/3.png");
+	Sprite::LoadTexture(10 , L"Resources/4.png");
+	Sprite::LoadTexture(11 , L"Resources/5.png");
+	Sprite::LoadTexture(12 , L"Resources/6.png");
+	Sprite::LoadTexture(13 , L"Resources/7.png");
+	Sprite::LoadTexture(14 , L"Resources/8.png");
+	Sprite::LoadTexture(15 , L"Resources/9.png");
 
-	sprite_ = Sprite::Create(1, { 10,10 });
+	title_ = Sprite::Create(1 , {0 , 0});
+	clear_ = Sprite::Create(2 , {0 , 0});
+	gameOver_ = Sprite::Create(3 , {0 , 0});
+	spaceToContinue_ = Sprite::Create(4 , {0 , 0});
+	spaceToReturnTitle_ = Sprite::Create(5 , {0 , 0});
+	num0_ = Sprite::Create(6 , {32 , 0});
+	num1_ = Sprite::Create(7 , {32 , 0});
+	num2_ = Sprite::Create(8 , {32 , 0});
+	num3_ = Sprite::Create(9 , {32 , 0});
+	num4_ = Sprite::Create(10 , {32 , 0});
+	num5_ = Sprite::Create(11 , {32 , 0});
+	num6_ = Sprite::Create(12 , {32 , 0});
+	num7_ = Sprite::Create(13 , {32 , 0});
+	num8_ = Sprite::Create(14 , {32 , 0});
+	num9_ = Sprite::Create(15 , {32 , 0});
+	num10_ = Sprite::Create(7 , {0 , 0});
+
 }
 
 void GameScene::Update() {
@@ -74,64 +120,38 @@ void GameScene::Update() {
 	goal->Update();
 
 	if (player->GetIsGoal() == true) {
-		if (stage <= 7) {
-			stage++;
-			Reset();
+		if (input_.TriggerKey(DIK_SPACE)) {
+			if (stage < 7) {
+				stage++;
+				Reset();
+			}
+			else {
+				stage = 1;
+				Reset();
+				scene_ = Scene::Title;
+			}
+			player->SetIsGoal(false);
+		}
+	}
+
+	if (player->GetIsDead() == true && particle->GetIsDead() == true) {
+		if (gameoverTimer <= 0) {
+			gameoverTimer = 600;
 		}
 		else {
-			scene_ = Scene::Clear;
+			gameoverTimer--;
+			if (gameoverTimer <= 0) {
+				stage = 1;
+				Reset();
+				scene_ = Scene::Title;
+			}
 		}
-		player->SetIsGoal(false);
+
+		if (input_.TriggerKey(DIK_SPACE)) {
+			gameoverTimer = 0;
+			Reset();
+		}
 	}
-
-	if (input_.TriggerKey(DIK_1)) {
-		stage = 1;
-		Reset();
-	}
-	else if (input_.TriggerKey(DIK_2)) {
-		stage = 2;
-		Reset();
-	}
-	else if (input_.TriggerKey(DIK_3)) {
-		stage = 3;
-		Reset();
-	}
-	else if (input_.TriggerKey(DIK_4)) {
-		stage = 4;
-		Reset();
-	}
-	else if (input_.TriggerKey(DIK_5)) {
-		stage = 5;
-		Reset();
-	}
-	else if (input_.TriggerKey(DIK_6)) {
-		stage = 6;
-		Reset();
-	}
-	else if (input_.TriggerKey(DIK_7)) {
-		stage = 7;
-		Reset();
-	}
-
-	if (input_.TriggerKey(DIK_R)) {
-		Reset();
-	}
-
-	break;
-	case GameScene::Scene::Pose:
-
-
-	break;
-	case GameScene::Scene::Clear:
-
-
-	break;
-	case GameScene::Scene::Over:
-
-
-	break;
-
-	default:
 	break;
 	}
 
@@ -142,7 +162,6 @@ void GameScene::Draw() {
 	switch (scene_) {
 	case GameScene::Scene::Title:
 
-
 	break;
 	case GameScene::Scene::Stage:
 
@@ -152,29 +171,81 @@ void GameScene::Draw() {
 	goal->Draw();
 
 	break;
-	case GameScene::Scene::Pose:
+	}
 
+	Sprite::PreDraw(dx12base_.GetCmdList().Get());
+
+
+	switch (scene_) {
+	case GameScene::Scene::Title:
+
+	title_->Draw();
 
 	break;
-	case GameScene::Scene::Clear:
+	case GameScene::Scene::Stage:
 
+	if (player->GetIsGoal() == true) {
+		clear_->Draw();
+		if (stage < 7) {
+			spaceToContinue_->Draw();
+		}
+		else {
+			spaceToReturnTitle_->Draw();
+		}
+	}
 
-	break;
-	case GameScene::Scene::Over:
+	if (player->GetIsDead() == true && particle->GetIsDead() == true) {
+		gameOver_->Draw();
+		spaceToContinue_->Draw();
 
+		if (gameoverTimer / 60 == 0) {
+			num0_->Draw();
+		}
+		if (gameoverTimer / 60 == 1) {
+			num1_->Draw();
+		}
+		if (gameoverTimer / 60 == 2) {
+			num2_->Draw();
+		}
+		if (gameoverTimer / 60 == 3) {
+			num3_->Draw();
+		}
+		if (gameoverTimer / 60 == 4) {
+			num4_->Draw();
+		}
+		if (gameoverTimer / 60 == 5) {
+			num5_->Draw();
+		}
+		if (gameoverTimer / 60 == 6) {
+			num6_->Draw();
+		}
+		if (gameoverTimer / 60 == 7) {
+			num7_->Draw();
+		}
+		if (gameoverTimer / 60 == 8) {
+			num8_->Draw();
+		}
+		if (gameoverTimer / 60 == 9) {
+			num9_->Draw();
+		}
+		if (gameoverTimer / 60 == 10) {
+			num10_->Draw();
+			num0_->Draw();
+		}
 
-	break;
+	}
 
-	default:
 	break;
 	}
-	sprite_->Draw();
+
+	Sprite::PostDraw();
+
 }
 
 void GameScene::Reset() {
 
 	player->Reset();
 	particle->Reset();
-	map->LoadMap(stage,&viewProjection_,&matProjection_);
+	map->LoadMap(stage , &viewProjection_ , &matProjection_);
 
 }

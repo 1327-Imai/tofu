@@ -85,7 +85,7 @@ void Model::LoadModel(const char* fileName) {
 
 			std::vector<XMFLOAT3>positions;	//頂点座標
 			std::vector<XMFLOAT3>normals;	//法線ベクトル
-			std::vector<XMFLOAT2>texcoad;	//テクスチャUV
+			std::vector<XMFLOAT2>texcoords;	//テクスチャUV
 			//1行ずつ読み込む
 			std::string line;
 			while (getline(file , line)) {
@@ -109,10 +109,32 @@ void Model::LoadModel(const char* fileName) {
 					//座標データに追加
 					positions.emplace_back(position);
 
-					//頂点データに追加
-					Vertex vertex{};
-					vertex.pos = position;
-					vertices.emplace_back(vertex);
+				}
+
+				//先頭文字列がvtならテクスチャ
+				if (key == "vt") {
+					//U,V成分読み込み
+					XMFLOAT2 texcoord{};
+					line_stream >> texcoord.x;
+					line_stream >> texcoord.y;
+
+					//V方向反転
+					texcoord.y = 1.0f - texcoord.y;
+
+					//テクスチャ座標データに追加
+					texcoords.emplace_back(texcoord);
+
+				}
+
+				if (key == "vn") {
+					//X,Y,Z成分読み込み
+					XMFLOAT3 normal{};
+					line_stream >> normal.x;
+					line_stream >> normal.y;
+					line_stream >> normal.z;
+
+					//法線ベクトルデータに追加
+					normals.emplace_back(normal);
 
 				}
 
@@ -125,14 +147,25 @@ void Model::LoadModel(const char* fileName) {
 
 						//頂点インデックス1個分の文字列をストリームに変換して解析しやすくする
 						std::istringstream index_stream(index_string);
-						unsigned short indexPosition;
+						unsigned short indexPosition,indexNormal,indexTexcoord;
 						index_stream >> indexPosition;
+						index_stream.seekg(1 , std::ios_base::cur);
+						index_stream >> indexTexcoord;
+						index_stream.seekg(1 , std::ios_base::cur);
+						index_stream >> indexNormal;
 
 						//頂点インデックスに追加
 						indices.emplace_back(indexPosition - 1);
 
+					Vertex vertex{};
+					vertex.pos = positions[indexPosition-1];
+					vertex.normal = normals[indexNormal - 1];
+					vertex.uv = texcoords[indexTexcoord - 1];
+					vertices.emplace_back(vertex);
+					
+					//インデックスデータの追加
+					indices.emplace_back((unsigned short)indices.size());
 					}
-
 				}
 
 			}

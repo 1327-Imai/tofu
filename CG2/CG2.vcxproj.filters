@@ -7,201 +7,151 @@
     <FxCompile Include="BasicPS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\SpritePixelShader.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\Shaders\SpriteVertexShader.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\SpritePixelShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Srouce</Filter>
-    </ClCompile>
-    <ClCompile Include="MathFunc.cpp">
-      <Filter>Srouce\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Matrix4.cpp">
-      <Filter>Srouce\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>Srouce\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector3.cpp">
-      <Filter>Srouce\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector4.cpp">
-      <Filter>Srouce\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Srouce</Filter>
-    </ClCompile>
-    <ClCompile Include="WinApp.cpp">
-      <Filter>Srouce\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="DX12base.cpp">
-      <Filter>Srouce\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Audio.cpp">
-      <Filter>Srouce\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject3D.cpp">
-      <Filter>Srouce\3d</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Srouce\3d</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Srouce\3d</Filter>
-    </ClCompile>
-    <ClCompile Include="ViewProjection.cpp">
-      <Filter>Srouce\3d</Filter>
-    </ClCompile>
-    <ClCompile Include="WorldTransform.cpp">
-      <Filter>Srouce\3d</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>Srouce\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Srouce\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Srouce</Filter>
-    </ClCompile>
-    <ClCompile Include="FPS.cpp">
-      <Filter>Srouce\FPS</Filter>
-    </ClCompile>
-    <ClCompile Include="Goal.cpp">
-      <Filter>Srouce</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Particle.cpp">
-      <Filter>Srouce</Filter>
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Goal.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="DX12base.cpp">
+      <Filter>Source\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="FPS.cpp">
+      <Filter>Source\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="MathFunc.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix4.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector4.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject3D.cpp">
+      <Filter>Source\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewProjection.cpp">
+      <Filter>Source\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldTransform.cpp">
+      <Filter>Source\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="WinApp.cpp">
+      <Filter>Source\Base</Filter>
+    </ClCompile>
     <ClCompile Include="Sprite.cpp">
-      <Filter>Hedder</Filter>
+      <Filter>Source\Sprite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MathFunc.h">
-      <Filter>Hedder\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix4.h">
-      <Filter>Hedder\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>Hedder\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector3.h">
-      <Filter>Hedder\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector4.h">
-      <Filter>Hedder\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="DX12base.h">
-      <Filter>Hedder\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="WinApp.h">
-      <Filter>Hedder\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Audio.h">
-      <Filter>Hedder\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>Hedder\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Hedder\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>Hedder\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject3D.h">
-      <Filter>Hedder\3d</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Hedder\3d</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Hedder\3d</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldTransform.h">
-      <Filter>Hedder\3d</Filter>
-    </ClInclude>
-    <ClInclude Include="ViewProjection.h">
-      <Filter>Hedder\3d</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Hedder</Filter>
+    <ClInclude Include="FPS.h">
+      <Filter>Header\Base</Filter>
     </ClInclude>
     <ClInclude Include="ErrorException.h">
-      <Filter>Hedder\FPS</Filter>
+      <Filter>Header\Base</Filter>
     </ClInclude>
-    <ClInclude Include="FPS.h">
-      <Filter>Hedder\FPS</Filter>
+    <ClInclude Include="DX12base.h">
+      <Filter>Header\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Goal.h">
-      <Filter>Hedder</Filter>
+    <ClInclude Include="Singleton.h">
+      <Filter>Header\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="WinApp.h">
+      <Filter>Header\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject3D.h">
+      <Filter>Header\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewProjection.h">
+      <Filter>Header\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Header\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MathFunc.h">
+      <Filter>Header\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix4.h">
+      <Filter>Header\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Header\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Header\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector4.h">
+      <Filter>Header\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Header\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Header\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Particle.h">
-    <ClInclude Include="Player.h">
-      <Filter>Hedder</Filter>
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Goal.h">
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.h">
-      <Filter>Hedder</Filter>
+      <Filter>Header\Sprite</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Hedder">
-      <UniqueIdentifier>{d001cf84-ddef-4f7d-be27-e6d55f9067a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shader">
-      <UniqueIdentifier>{d07adb4a-ee96-4b6d-9585-5192f3a19326}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Hedder\Math">
-      <UniqueIdentifier>{85459644-e2f0-487b-864c-3dab80f1cb0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Srouce">
-      <UniqueIdentifier>{813cb8ef-ab2c-40fa-ab9a-bf247185e16a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Srouce\Math">
-      <UniqueIdentifier>{dc5fa03c-e360-4828-8a43-b24ffb8d25c5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Hedder\Base">
-      <UniqueIdentifier>{0eb4d8cd-d86a-4dcf-887c-c5532d85db98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Hedder\Audio">
-      <UniqueIdentifier>{0fcee3aa-1730-4efc-91dd-a72ea90f3d8d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Hedder\Scene">
-      <UniqueIdentifier>{1f4268a9-5c94-4054-9986-735655dd3558}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Hedder\Input">
-      <UniqueIdentifier>{a98df30e-a46b-495d-b7d1-4da30fdaeead}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Hedder\3d">
-      <UniqueIdentifier>{6da25f1d-38d6-45fb-90ae-d971e40b93e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Srouce\Base">
-      <UniqueIdentifier>{8484bcd4-5a54-4905-b2e1-237942e4c3af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Srouce\Audio">
-      <UniqueIdentifier>{137110f3-3d5b-44db-9257-08bb6b806848}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Srouce\3d">
-      <UniqueIdentifier>{dfca1537-e1a9-4d9e-a39e-5c1f3a8ec34a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Srouce\Scene">
-      <UniqueIdentifier>{2dfe83d7-4ec8-4727-ad07-eac92d3ced33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Srouce\Input">
-      <UniqueIdentifier>{49b90a1c-9e64-4e3e-983a-8d56e0459c0c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Hedder\FPS">
-      <UniqueIdentifier>{af4c2a5a-93df-44d9-a23f-62f72bd985ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Srouce\FPS">
-      <UniqueIdentifier>{8ee8761e-c1bd-4e6b-b10b-e72239fe8b5e}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="WorldTransform.h">
+      <Filter>Header\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli">
@@ -210,5 +160,58 @@
     <None Include="Resources\Shaders\SpriteShaderHeader.hlsli">
       <Filter>Shader</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header">
+      <UniqueIdentifier>{fc6baadc-d34b-4ea9-9ed6-ec9622797ce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\3D">
+      <UniqueIdentifier>{2c5563e3-b83b-4b8d-ac02-6854bf80b9c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Base">
+      <UniqueIdentifier>{aa234b3f-b045-4434-a1de-6a4d6bdcc063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Math">
+      <UniqueIdentifier>{2669ee3b-590e-46b6-aa3d-bbf79136fe50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Audio">
+      <UniqueIdentifier>{51eba3ad-610f-4557-8805-5da625b5abe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Input">
+      <UniqueIdentifier>{42413e69-86d8-474a-bbc6-0f9edb766b77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Scene">
+      <UniqueIdentifier>{3af0e218-16ad-483c-98f5-a68cc683383e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{f812835c-be7f-4f89-824b-1d272154da4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Sprite">
+      <UniqueIdentifier>{060c184f-d5da-4b24-b898-a38b053a2b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{58d8a7bb-2db6-4dc1-8c53-4e6fd66a0883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\3D">
+      <UniqueIdentifier>{374a7918-8247-4fbe-8816-b314df0d7d69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Audio">
+      <UniqueIdentifier>{59db00c1-282f-49ea-a0e5-965cf44680ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Base">
+      <UniqueIdentifier>{acb8308f-3327-436d-a4d9-8d6edd30a579}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Math">
+      <UniqueIdentifier>{a40d2715-db39-4779-9f5b-c14eef5e6b17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Input">
+      <UniqueIdentifier>{b6b58fb1-cb42-4952-a5ea-8ac399be9ba7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Sprite">
+      <UniqueIdentifier>{b8ae59ab-f8bb-4c49-a672-072e0d9bf103}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scene">
+      <UniqueIdentifier>{30f0b0f7-d55f-422b-8066-f248ec2ac040}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
