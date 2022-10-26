@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "Map.h"
 #include "Goal.h"
+#include "Particle.h"
 
 class GameScene {
 
@@ -50,6 +51,8 @@ private: // メンバ変数
 	bool isPlayingBGM = false;
 
 	Player* player = nullptr;
+
+	Particle* particle = nullptr;
 
 	Map* map = nullptr;
 

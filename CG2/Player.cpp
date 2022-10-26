@@ -178,3 +178,15 @@ int Player::GetIsGoal() {
 void Player::SetIsGoal(int flag) {
 	isGoal = flag;
 }
+
+int Player::GetIsDead() {
+	return isDead;
+}
+
+Vector3 Player::GetAngle() {
+	return angle;
+}
+
+WorldTransform Player::GetWorldTransform() {
+	return gameObject->worldTransform;
+}

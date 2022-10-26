@@ -75,6 +75,8 @@
     <ClCompile Include="Goal.cpp">
       <Filter>Srouce</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Srouce</Filter>
     <ClCompile Include="Sprite.cpp">
       <Filter>Hedder</Filter>
     </ClCompile>
@@ -140,6 +142,7 @@
     <ClInclude Include="Goal.h">
       <Filter>Hedder</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.h">
     <ClInclude Include="Player.h">
       <Filter>Hedder</Filter>
     </ClInclude>

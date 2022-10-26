@@ -37,7 +37,7 @@ namespace MathFunc {
 		float Rad2Deg(float rad);	//弧度法を度数法に変換する関数
 
 		//ベクトルと行列の掛け算をする関数
-		//Vector3 MulVector3AndMatrix4(Vector3 vec , Matrix4 mat);
+		Vector3 MulVector3AndMatrix4(Vector3 vec , Matrix4 mat);
 	}
 
 }

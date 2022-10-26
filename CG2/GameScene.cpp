@@ -39,6 +39,9 @@ void GameScene::Initialize(WinApp* winApp) {
 	player->SetMap(map);
 	player->SetGoal(goal);
 
+	particle = new Particle;
+	particle->Initialize(&viewProjection_ , &matProjection_ , player);
+
 	stage = 1;
 
 	Sprite::LoadTexture(1, L"Resources/reimu.png");
@@ -67,6 +70,7 @@ void GameScene::Update() {
 
 	map->Update();
 	player->Update();
+	particle->Update();
 	goal->Update();
 
 	if (player->GetIsGoal() == true) {
@@ -144,6 +148,7 @@ void GameScene::Draw() {
 
 	map->Draw();
 	player->Draw();
+	particle->Draw();
 	goal->Draw();
 
 	break;
@@ -169,6 +174,7 @@ void GameScene::Draw() {
 void GameScene::Reset() {
 
 	player->Reset();
+	particle->Reset();
 	map->LoadMap(stage,&viewProjection_,&matProjection_);
 
 }
