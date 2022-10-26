@@ -57,7 +57,10 @@ private: // メンバ変数
 	Map* map = nullptr;
 
 	Goal* goal = nullptr;
-  
+
+	GameObject3D* tutorialFloor = nullptr;
+	GameObject3D* stageFloor = nullptr;
+
 	//シーン管理
 	enum class Scene
 	{

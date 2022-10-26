@@ -10,11 +10,16 @@ GameScene::~GameScene() {
 	delete map;
 	delete goal;
 	delete particle;
+	
+	delete tutorialFloor;
+	delete stageFloor;
+
 	delete title_;
 	delete clear_;
 	delete gameOver_;
 	delete spaceToContinue_;
 	delete spaceToReturnTitle_;
+	
 	delete num0_;
 	delete num1_;
 	delete num2_;
@@ -26,6 +31,8 @@ GameScene::~GameScene() {
 	delete num8_;
 	delete num9_;
 	delete num10_;
+
+
 }
 
 void GameScene::Initialize(WinApp* winApp) {
@@ -57,6 +64,30 @@ void GameScene::Initialize(WinApp* winApp) {
 
 	particle = new Particle;
 	particle->Initialize(&viewProjection_ , &matProjection_ , player);
+
+	tutorialFloor = new GameObject3D;
+	tutorialFloor->PreLoadModel("Resources/stageFloor.obj");
+	tutorialFloor->PreLoadTexture(L"Resources/tutorialFloor.png");
+	tutorialFloor->SetViewProjection(&viewProjection_);
+	tutorialFloor->SetMatProjection(&matProjection_);
+	tutorialFloor->Initialize();
+	tutorialFloor->worldTransform.translation.x = -1.0;
+	tutorialFloor->worldTransform.translation.z = +1.0;
+	tutorialFloor->worldTransform.translation.y = -1.0;
+	tutorialFloor->worldTransform.rotation.y = MathFunc::Utility::Deg2Rad(90);
+	tutorialFloor->Update();
+
+	stageFloor = new GameObject3D;
+	stageFloor->PreLoadModel("Resources/stageFloor.obj");
+	stageFloor->PreLoadTexture(L"Resources/stageFloor.png");
+	stageFloor->SetViewProjection(&viewProjection_);
+	stageFloor->SetMatProjection(&matProjection_);
+	stageFloor->Initialize();
+	stageFloor->worldTransform.translation.x = -1.0;
+	stageFloor->worldTransform.translation.z = +1.0;
+	stageFloor->worldTransform.translation.y = -1.0;
+	stageFloor->worldTransform.rotation.y = MathFunc::Utility::Deg2Rad(90);
+	stageFloor->Update();
 
 	stage = 1;
 
@@ -113,11 +144,14 @@ void GameScene::Update() {
 
 	break;
 	case GameScene::Scene::Stage:
+	tutorialFloor->Update();
+	stageFloor->Update();
 
 	map->Update();
 	player->Update();
 	particle->Update();
 	goal->Update();
+
 
 	if (player->GetIsGoal() == true) {
 		if (input_.TriggerKey(DIK_SPACE)) {
@@ -159,12 +193,19 @@ void GameScene::Update() {
 }
 
 void GameScene::Draw() {
+	//3D描画
 	switch (scene_) {
 	case GameScene::Scene::Title:
 
 	break;
 	case GameScene::Scene::Stage:
 
+	if (stage == 1) {
+		tutorialFloor->Draw();
+	}
+	else {
+		stageFloor->Draw();
+	}
 	map->Draw();
 	player->Draw();
 	particle->Draw();
@@ -173,9 +214,8 @@ void GameScene::Draw() {
 	break;
 	}
 
+	//スプライト描画
 	Sprite::PreDraw(dx12base_.GetCmdList().Get());
-
-
 	switch (scene_) {
 	case GameScene::Scene::Title:
 

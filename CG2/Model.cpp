@@ -74,6 +74,70 @@ void Model::LoadModel(const char* fileName) {
 #pragma region//.objファイルの場合
 		if (strcmp(fileType , ".obj") == 0) {
 
+				////ファイルストリーム
+				//std::fstream file;
+				////.objファイルを開く
+				//file.open(fileName);
+				////ファイルオープン失敗をチェック
+				//if (file.fail()) {
+				//	assert(0);
+				//}
+
+				//std::vector<XMFLOAT3>positions;	//頂点座標
+				//std::vector<XMFLOAT3>normals;	//法線ベクトル
+				//std::vector<XMFLOAT2>texcoad;	//テクスチャUV
+				////1行ずつ読み込む
+				//std::string line;
+				//while (getline(file , line)) {
+
+				//	//1行分の文字列をストリームに変換して解析しやすくする
+				//	std::istringstream line_stream(line);
+
+				//	//半角スペース区切りで行の先頭文字を取得
+				//	std::string key;
+				//	getline(line_stream , key , ' ');
+
+				//	//先頭文字列がvなら頂点座標
+				//	if (key == "v") {
+
+				//		//X,Y,Z座標読み込み
+				//		XMFLOAT3 position{};
+				//		line_stream >> position.x;
+				//		line_stream >> position.y;
+				//		line_stream >> position.z;
+
+				//		//座標データに追加
+				//		positions.emplace_back(position);
+
+				//		//頂点データに追加
+				//		Vertex vertex{};
+				//		vertex.pos = position;
+				//		vertices.emplace_back(vertex);
+
+				//	}
+
+				//	//先頭文字列がfならポリゴン(三角形)
+				//	if (key == "f") {
+
+				//		//半角スペース区切りで行の続きを読み込む
+				//		std::string index_string;
+				//		while (getline(line_stream , index_string , ' ')) {
+
+				//			//頂点インデックス1個分の文字列をストリームに変換して解析しやすくする
+				//			std::istringstream index_stream(index_string);
+				//			unsigned short indexPosition;
+				//			index_stream >> indexPosition;
+
+				//			//頂点インデックスに追加
+				//			indices.emplace_back(indexPosition - 1);
+
+				//		}
+
+				//	}
+
+				//}
+				//file.close();
+
 			//ファイルストリーム
 			std::fstream file;
 			//.objファイルを開く
@@ -147,27 +211,23 @@ void Model::LoadModel(const char* fileName) {
 
 						//頂点インデックス1個分の文字列をストリームに変換して解析しやすくする
 						std::istringstream index_stream(index_string);
-						unsigned short indexPosition,indexNormal,indexTexcoord;
+						unsigned short indexPosition , indexNormal , indexTexcoord;
 						index_stream >> indexPosition;
 						index_stream.seekg(1 , std::ios_base::cur);
 						index_stream >> indexTexcoord;
 						index_stream.seekg(1 , std::ios_base::cur);
 						index_stream >> indexNormal;
 
-						//頂点インデックスに追加
-						indices.emplace_back(indexPosition - 1);
+						Vertex vertex{};
+						vertex.pos = positions[indexPosition - 1];
+						vertex.normal = normals[indexNormal - 1];
+						vertex.uv = texcoords[indexTexcoord - 1];
+						vertices.emplace_back(vertex);
 
-					Vertex vertex{};
-					vertex.pos = positions[indexPosition-1];
-					vertex.normal = normals[indexNormal - 1];
-					vertex.uv = texcoords[indexTexcoord - 1];
-					vertices.emplace_back(vertex);
-					
-					//インデックスデータの追加
-					indices.emplace_back((unsigned short)indices.size());
+						//インデックスデータの追加
+						indices.emplace_back((unsigned short)indices.size());
 					}
 				}
-
 			}
 			file.close();
 		}
