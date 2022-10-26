@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject3D.h"
 #include <vector>
+#include <iostream>
 #include <fstream>
 #include <sstream>
 

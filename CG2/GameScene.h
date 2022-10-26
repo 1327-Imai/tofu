@@ -57,21 +57,38 @@ private: // メンバ変数
 	Map* map = nullptr;
 
 	Goal* goal = nullptr;
-  
+
+	GameObject3D* tutorialFloor = nullptr;
+	GameObject3D* stageFloor = nullptr;
+
 	//シーン管理
 	enum class Scene
 	{
 		Title,//タイトル
 		Stage,//ステージ
-		Pose,//ポーズ
-		Clear,//クリア
-		Over,//ゲームオーバー
 	};
 
 	Scene scene_ = Scene::Title;
 
 	int stage = 0;
 
-	Sprite* sprite_ = nullptr;
+	int gameoverTimer = 0;
+
+	Sprite* title_ = nullptr;
+	Sprite* clear_ = nullptr;
+	Sprite* gameOver_ = nullptr;
+	Sprite* spaceToContinue_ = nullptr;
+	Sprite* spaceToReturnTitle_ = nullptr;
+	Sprite* num0_ = nullptr;
+	Sprite* num1_ = nullptr;
+	Sprite* num2_ = nullptr;
+	Sprite* num3_ = nullptr;
+	Sprite* num4_ = nullptr;
+	Sprite* num5_ = nullptr;
+	Sprite* num6_ = nullptr;
+	Sprite* num7_ = nullptr;
+	Sprite* num8_ = nullptr;
+	Sprite* num9_ = nullptr;
+	Sprite* num10_ = nullptr;
 
 };

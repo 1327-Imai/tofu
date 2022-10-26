@@ -8,6 +8,16 @@ std::mt19937_64 engine(seed_gen());
 //—””ÍˆÍ‚Ìw’è
 std::uniform_real_distribution<float> distRot(MathFunc::Utility::Deg2Rad(-60) , MathFunc::Utility::Deg2Rad(60));
 
+Particle::Particle() {
+
+}
+
+Particle::~Particle() {
+	for (int i = 0; i < particleValue; i++) {
+		delete gameObject[i];
+	}
+}
+
 void Particle::Initialize(ViewProjection* viewProjection , XMMATRIX* matProjection , Player* player) {
 
 	for (int i = 0; i < particleValue; i++) {
@@ -92,4 +102,8 @@ void Particle::Reset() {
 		particleOff[i] = true;
 
 	}
+}
+
+int Particle::GetIsDead() {
+	return isDead[0];
 }

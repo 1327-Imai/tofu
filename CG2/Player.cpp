@@ -23,6 +23,8 @@ Player::~Player() {
 void Player::Initialize(ViewProjection* viewProjection , XMMATRIX* matProjection) {
 
 	gameObject = new GameObject3D();
+	gameObject->PreLoadModel("Resources/tofu/tofu.obj");
+	gameObject->PreLoadTexture(L"Resources/tofu/tofu.png");
 	gameObject->SetViewProjection(viewProjection);
 	gameObject->SetMatProjection(matProjection);
 	gameObject->Initialize();
@@ -117,29 +119,37 @@ void Player::Collision() {
 
 			int objectId = 0;
 
-			objectId = map->GetObjectID(
-				j + (int)(gameObject->worldTransform.translation.x / 2 + 25) ,
-				i + (int)(50 - (gameObject->worldTransform.translation.z / 2 + 25))
-			);
+			if (0 <= j + (int)(gameObject->worldTransform.translation.x / 2 + 25) &&
+				0 <= i + (int)(50 - (gameObject->worldTransform.translation.z / 2 + 25))) {
 
-			if (0 <= objectId) {
+				if (j + (int)(gameObject->worldTransform.translation.x / 2 + 25) < 50 &&
+					i + (int)(50 - (gameObject->worldTransform.translation.z / 2 + 25)) < 50) {
 
-				if (map->GetWorldTransform(objectId).translation.x - gameObject->worldTransform.translation.x < 2 &&
-					-2 < map->GetWorldTransform(objectId).translation.x - gameObject->worldTransform.translation.x) {
-					if (map->GetWorldTransform(objectId).translation.z - gameObject->worldTransform.translation.z < 2 &&
-						-2 < map->GetWorldTransform(objectId).translation.z - gameObject->worldTransform.translation.z) {
+					objectId = map->GetObjectID(
+						j + (int)(gameObject->worldTransform.translation.x / 2 + 25) ,
+						i + (int)(50 - (gameObject->worldTransform.translation.z / 2 + 25))
+					);
 
-						if (0.4 < moveSpeed) {
-							isDead = true;
-						}
-						else {
-							if (isHitMap == false) {
-								isHitMap = true;
+					if (0 <= objectId) {
+
+						if (map->GetWorldTransform(objectId).translation.x - gameObject->worldTransform.translation.x < 2 &&
+							-2 < map->GetWorldTransform(objectId).translation.x - gameObject->worldTransform.translation.x) {
+							if (map->GetWorldTransform(objectId).translation.z - gameObject->worldTransform.translation.z < 2 &&
+								-2 < map->GetWorldTransform(objectId).translation.z - gameObject->worldTransform.translation.z) {
+
+								if (0.4 < moveSpeed) {
+									isDead = true;
+								}
+								else {
+									if (isHitMap == false) {
+										isHitMap = true;
+									}
+									else {
+										isHitMap = false;
+									}
+									gameObject->worldTransform.translation -= velocity;
+								}
 							}
-							else {
-								isHitMap = false;
-							}
-							gameObject->worldTransform.translation -= velocity;
 						}
 					}
 				}
@@ -154,9 +164,9 @@ void Player::Collision() {
 			-3 < goal->GetWorldTransform().translation.y - gameObject->worldTransform.translation.y) {
 			if (goal->GetWorldTransform().translation.z - gameObject->worldTransform.translation.z < 3 &&
 				-3 < goal->GetWorldTransform().translation.z - gameObject->worldTransform.translation.z) {
-			
+
 				isGoal = true;
-			
+
 			}
 		}
 	}
