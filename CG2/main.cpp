@@ -55,9 +55,13 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 	input_.DirectInputCreate(winApp_);
 #pragma endregion
 
+	Sprite::StaticInitialize(dx12base.GetDevice(), winApp_.window_width, winApp_.window_height);
+
 	// ゲームシーンの初期化
 	gameScene = new GameScene();
 	gameScene->Initialize(&winApp_);
+
+
 
 
 #pragma region//描画初期化処理
@@ -293,7 +297,6 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 #pragma endregion
 
 #pragma endregion//描画初期化処理
-
 #pragma region//ゲームループ
 	while (true) {
 
@@ -335,7 +338,10 @@ int WINAPI WinMain(_In_ HINSTANCE , _In_opt_ HINSTANCE , _In_ LPSTR , _In_ int) 
 		//プリミティブ形状の設定コマンド
 		dx12base.GetCmdList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+		Sprite::PreDraw(dx12base.GetCmdList().Get());
 		gameScene->Draw();
+
+		Sprite::PostDraw();
 #pragma endregion
 
 		//描画後処理

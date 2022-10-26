@@ -7,6 +7,12 @@
     <FxCompile Include="BasicPS.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\SpritePixelShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\SpriteVertexShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -69,6 +75,9 @@
     <ClCompile Include="Goal.cpp">
       <Filter>Srouce</Filter>
     </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Hedder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MathFunc.h">
@@ -85,9 +94,6 @@
     </ClInclude>
     <ClInclude Include="Vector4.h">
       <Filter>Hedder\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Hedder</Filter>
     </ClInclude>
     <ClInclude Include="DX12base.h">
       <Filter>Hedder\Base</Filter>
@@ -132,6 +138,12 @@
       <Filter>Hedder\FPS</Filter>
     </ClInclude>
     <ClInclude Include="Goal.h">
+      <Filter>Hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Hedder</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
       <Filter>Hedder</Filter>
     </ClInclude>
   </ItemGroup>
@@ -190,6 +202,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Basic.hlsli">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Resources\Shaders\SpriteShaderHeader.hlsli">
       <Filter>Shader</Filter>
     </None>
   </ItemGroup>
