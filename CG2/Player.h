@@ -28,6 +28,12 @@ public:
 	int GetIsGoal();
 	void SetIsGoal(int flag);
 
+	int GetIsDead();
+
+	Vector3 GetAngle();
+	
+	WorldTransform GetWorldTransform();
+
 	//ƒƒ“ƒoŠÖ”
 private:
 	void Rotate();
