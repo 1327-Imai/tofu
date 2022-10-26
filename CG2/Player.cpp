@@ -3,6 +3,7 @@
 class Map {
 public:
 	int GetObjectCount();
+	int GetObjectID(int x , int y);
 	WorldTransform GetWorldTransform(int ObjectNum);
 };
 
@@ -21,6 +22,8 @@ void Player::Initialize(ViewProjection* viewProjection , XMMATRIX* matProjection
 	gameObject->SetMatProjection(matProjection);
 	gameObject->Initialize();
 
+	Reset();
+
 }
 
 void Player::Update() {
@@ -38,6 +41,12 @@ void Player::Draw() {
 	if (isDead == false) {
 		gameObject->Draw();
 	}
+}
+
+void Player::Reset() {
+	gameObject->worldTransform.translation = {-40 , 0 , -40};
+	moveSpeed = 0;
+	isDead = false;
 }
 
 void Player::Rotate() {
@@ -69,7 +78,7 @@ void Player::Move() {
 	}
 	else {
 		if (0 < moveSpeed) {
-			moveSpeed -= accelaration * 2;
+			moveSpeed -= accelaration;
 
 			if (moveSpeed <= 0) {
 				moveSpeed = 0;
@@ -98,27 +107,62 @@ void Player::Move() {
 
 void Player::Colision() {
 	//マップチップ
-	for (int i = 0; i < map->GetObjectCount(); i++) {
-		if (map->GetWorldTransform(i).translation.x - gameObject->worldTransform.translation.x < 2 &&
-			-2 < map->GetWorldTransform(i).translation.x - gameObject->worldTransform.translation.x) {
-			if (map->GetWorldTransform(i).translation.z - gameObject->worldTransform.translation.z < 2 &&
-				-2 < map->GetWorldTransform(i).translation.z - gameObject->worldTransform.translation.z) {
+	for (int i = -1; i <= 1; i++) {
+		for (int j = -1; j <= 1; j++) {
 
-				if (0.5 < moveSpeed) {
-					isDead = true;
-				}
-				else {
-					if (isHitMap == false) {
-						isHitMap = true;					
+			int objectId = 0;
+
+			objectId = map->GetObjectID(
+				j + (int)(gameObject->worldTransform.translation.x / 2 + 25) ,
+				i + (int)(50 - (gameObject->worldTransform.translation.z / 2 + 25))
+			);
+
+			if (0 <= objectId) {
+
+				if (map->GetWorldTransform(objectId).translation.x - gameObject->worldTransform.translation.x < 2 &&
+					-2 < map->GetWorldTransform(objectId).translation.x - gameObject->worldTransform.translation.x) {
+					if (map->GetWorldTransform(objectId).translation.z - gameObject->worldTransform.translation.z < 2 &&
+						-2 < map->GetWorldTransform(objectId).translation.z - gameObject->worldTransform.translation.z) {
+
+						if (0.4 < moveSpeed) {
+							isDead = true;
+						}
+						else {
+							if (isHitMap == false) {
+								isHitMap = true;
+							}
+							else {
+								isHitMap = false;
+							}
+							gameObject->worldTransform.translation -= velocity;
+						}
 					}
-					else {
-						isHitMap = false;
-					}
-					gameObject->worldTransform.translation -= velocity;
 				}
 			}
 		}
 	}
+
+	//for (int i = 0; i < map->GetObjectCount(); i++) {
+	//	if (map->GetWorldTransform(i).translation.x - gameObject->worldTransform.translation.x < 2 &&
+	//		-2 < map->GetWorldTransform(i).translation.x - gameObject->worldTransform.translation.x) {
+	//		if (map->GetWorldTransform(i).translation.z - gameObject->worldTransform.translation.z < 2 &&
+	//			-2 < map->GetWorldTransform(i).translation.z - gameObject->worldTransform.translation.z) {
+
+	//			if (0.4 < moveSpeed) {
+	//				isDead = true;
+	//			}
+	//			else {
+	//				if (isHitMap == false) {
+	//					isHitMap = true;					
+	//				}
+	//				else {
+	//					isHitMap = false;
+	//				}
+	//				gameObject->worldTransform.translation -= velocity;
+	//			}
+	//		}
+	//	}
+	//}
 }
 
 //アクセッサ
