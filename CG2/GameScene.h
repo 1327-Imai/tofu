@@ -11,6 +11,7 @@
 
 #include "Player.h"
 #include "Map.h"
+#include "Goal.h"
 
 class GameScene {
 
@@ -50,6 +51,8 @@ private: // メンバ変数
 	Player* player = nullptr;
 
 	Map* map = nullptr;
+
+	Goal* goal = nullptr;
   
 	//シーン管理
 	enum class Scene
@@ -64,5 +67,7 @@ private: // メンバ変数
 	Scene scene_ = Scene::Title;
 
 	int stage = 0;
+
+
 
 };

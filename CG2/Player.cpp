@@ -7,6 +7,11 @@ public:
 	WorldTransform GetWorldTransform(int ObjectNum);
 };
 
+class Goal {
+public:
+	WorldTransform GetWorldTransform();
+};
+
 Player::Player() {
 
 }
@@ -141,9 +146,35 @@ void Player::Collision() {
 			}
 		}
 	}
+
+	//ゴール
+	if (goal->GetWorldTransform().translation.x - gameObject->worldTransform.translation.x < 3 &&
+		-3 < goal->GetWorldTransform().translation.x - gameObject->worldTransform.translation.x) {
+		if (goal->GetWorldTransform().translation.y - gameObject->worldTransform.translation.y < 3 &&
+			-3 < goal->GetWorldTransform().translation.y - gameObject->worldTransform.translation.y) {
+			if (goal->GetWorldTransform().translation.z - gameObject->worldTransform.translation.z < 3 &&
+				-3 < goal->GetWorldTransform().translation.z - gameObject->worldTransform.translation.z) {
+			
+				isGoal = true;
+			
+			}
+		}
+	}
 }
 
 //アクセッサ
 void Player::SetMap(Map* map) {
 	this->map = map;
+}
+
+void Player::SetGoal(Goal* goal) {
+	this->goal = goal;
+}
+
+int Player::GetIsGoal() {
+	return isGoal;
+}
+
+void Player::SetIsGoal(int flag) {
+	isGoal = flag;
 }

@@ -66,6 +66,9 @@
     <ClCompile Include="FPS.cpp">
       <Filter>Srouce\FPS</Filter>
     </ClCompile>
+    <ClCompile Include="Goal.cpp">
+      <Filter>Srouce</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MathFunc.h">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="FPS.h">
       <Filter>Hedder\FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="Goal.h">
+      <Filter>Hedder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

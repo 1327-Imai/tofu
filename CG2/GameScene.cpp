@@ -8,6 +8,7 @@ GameScene::GameScene() {
 GameScene::~GameScene() {
 	delete player;
 	delete map;
+	delete goal;
 }
 
 void GameScene::Initialize(WinApp* winApp) {
@@ -29,9 +30,13 @@ void GameScene::Initialize(WinApp* winApp) {
 	map = new Map();
 	map->Initialize(&viewProjection_ , &matProjection_);
 
+	goal = new Goal;
+	goal->Initialize(&viewProjection_,&matProjection_);
+
 	player = new Player();
 	player->Initialize(&viewProjection_ , &matProjection_);
 	player->SetMap(map);
+	player->SetGoal(goal);
 
 	stage = 1;
 }
@@ -57,6 +62,18 @@ void GameScene::Update() {
 
 	map->Update();
 	player->Update();
+	goal->Update();
+
+	if (player->GetIsGoal() == true) {
+		if (stage <= 7) {
+			stage++;
+			Reset();
+		}
+		else {
+			scene_ = Scene::Clear;
+		}
+		player->SetIsGoal(false);
+	}
 
 	if (input_.TriggerKey(DIK_1)) {
 		stage = 1;
@@ -122,6 +139,7 @@ void GameScene::Draw() {
 
 	map->Draw();
 	player->Draw();
+	goal->Draw();
 
 	break;
 	case GameScene::Scene::Pose:
