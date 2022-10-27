@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject3D.h"
 #include "Player.h"
+#include "Audio.h"
 
 class Particle {
 public:
@@ -37,6 +38,9 @@ private:
 	int particleOff[particleValue] = {0};
 
 	Player* player = nullptr;
-
+	SoundManager soundManager_;
+	//âπê∫ì«Ç›çûÇ›
+	SoundData soundData1 = soundManager_.SoundLoadWave("Resources/death.wav");
+	bool isPlayingBGM = false;
 };
 

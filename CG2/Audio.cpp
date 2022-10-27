@@ -86,13 +86,13 @@ SoundData SoundManager::SoundLoadWave(const char* filename) {
 }
 
 //-------音声データの解放-------//
-void SoundManager::SoundUnload(SoundData* soundData) {
+void SoundManager::SoundUnload(SoundData& soundData) {
 	//バッファのメモリを解放
-	delete[] soundData->pBuffer;
+	delete[] soundData.pBuffer;
 
-	soundData->pBuffer = 0;
-	soundData->bufferSize = 0;
-	soundData->wfex = {};
+	soundData.pBuffer = 0;
+	soundData.bufferSize = 0;
+	soundData.wfex = {};
 }
 
 //------サウンドの再生-------//

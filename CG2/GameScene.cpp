@@ -32,7 +32,8 @@ GameScene::~GameScene() {
 	delete num9_;
 	delete num10_;
 
-
+	soundManager_.SoundUnload(soundData1);
+	soundManager_.SoundUnload(selectSound);
 }
 
 void GameScene::Initialize(WinApp* winApp) {
@@ -78,7 +79,7 @@ void GameScene::Initialize(WinApp* winApp) {
 	tutorialFloor->Update();
 
 	stageFloor = new GameObject3D;
-	stageFloor->PreLoadModel("Resources/stageFloor.obj");
+	//stageFloor->PreLoadModel("Resources/stageFloor.obj");
 	stageFloor->PreLoadTexture(L"Resources/stageFloor.png");
 	stageFloor->SetViewProjection(&viewProjection_);
 	stageFloor->SetMatProjection(&matProjection_);
@@ -139,6 +140,7 @@ void GameScene::Update() {
 	case GameScene::Scene::Title:
 
 	if (input_.PushKey(DIK_SPACE)) {
+		soundManager_.SoundPlayWave(soundManager_.xAudio2.Get(), selectSound, false, 0.01f);
 		scene_ = GameScene::Scene::Stage;
 	}
 
@@ -155,6 +157,7 @@ void GameScene::Update() {
 
 	if (player->GetIsGoal() == true) {
 		if (input_.TriggerKey(DIK_SPACE)) {
+			soundManager_.SoundPlayWave(soundManager_.xAudio2.Get(), selectSound, false, 0.01f);
 			if (stage < 7) {
 				stage++;
 				Reset();
@@ -182,6 +185,7 @@ void GameScene::Update() {
 		}
 
 		if (input_.TriggerKey(DIK_SPACE)) {
+			soundManager_.SoundPlayWave(soundManager_.xAudio2.Get(), selectSound, false, 0.01f);
 			gameoverTimer = 0;
 			Reset();
 		}

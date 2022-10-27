@@ -47,6 +47,7 @@ private: // メンバ変数
 
 	//音声読み込み
 	SoundData soundData1 = soundManager_.SoundLoadWave("Resources/Alarm01.wav");
+	SoundData selectSound = soundManager_.SoundLoadWave("Resources/selectSound.wav");
 
 	bool isPlayingBGM = false;
 

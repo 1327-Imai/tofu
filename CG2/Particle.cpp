@@ -19,7 +19,7 @@ Particle::~Particle() {
 }
 
 void Particle::Initialize(ViewProjection* viewProjection , XMMATRIX* matProjection , Player* player) {
-
+	soundManager_.Initialize();
 	for (int i = 0; i < particleValue; i++) {
 
 		gameObject[i] = new GameObject3D;
@@ -42,7 +42,11 @@ void Particle::Initialize(ViewProjection* viewProjection , XMMATRIX* matProjecti
 void Particle::Update() {
 
 	if (player->GetIsDead() == true) {
-
+		if (isPlayingBGM == false) {
+			//âπê∫çƒê∂
+			soundManager_.SoundPlayWave(soundManager_.xAudio2.Get() , soundData1 , false , 0.01f);
+			isPlayingBGM = true;
+		}
 		for (int i = 0; i < particleValue; i++) {
 			if (particleOff[i] == true) {
 
@@ -75,6 +79,7 @@ void Particle::Update() {
 				gameObject[i]->Update();
 				timer[i]--;
 				if (timer[i] < 0) {
+					
 					isDead[i] = true;
 				}
 			}
@@ -100,7 +105,7 @@ void Particle::Reset() {
 	for (int i = 0; i < particleValue; i++) {
 	
 		particleOff[i] = true;
-
+		isPlayingBGM = false;
 	}
 }
 
