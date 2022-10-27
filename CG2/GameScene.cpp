@@ -79,7 +79,7 @@ void GameScene::Initialize(WinApp* winApp) {
 	tutorialFloor->Update();
 
 	stageFloor = new GameObject3D;
-	//stageFloor->PreLoadModel("Resources/stageFloor.obj");
+	stageFloor->PreLoadModel("Resources/stageFloor.obj");
 	stageFloor->PreLoadTexture(L"Resources/stageFloor.png");
 	stageFloor->SetViewProjection(&viewProjection_);
 	stageFloor->SetMatProjection(&matProjection_);
