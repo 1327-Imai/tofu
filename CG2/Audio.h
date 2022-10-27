@@ -56,7 +56,7 @@ public:
 	void StopWave(const SoundData& soundData);
 	//void StopWave(const std::string& filename);
 	//‰¹º‰ğ•ú
-	void SoundUnload(SoundData* soundData);
+	void SoundUnload(SoundData& soundData);
 	//xAudio2‚Ì‰ğ•ú
 	void End();
 
